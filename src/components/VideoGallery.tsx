@@ -1,0 +1,225 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Play, X, Volume2, VolumeX } from 'lucide-react';
+import hairStylingImage from '@/assets/hair-styling.jpg';
+import skinCareImage from '@/assets/skin-care.jpg';
+import nailArtImage from '@/assets/nail-art.jpg';
+
+const VideoGallery = () => {
+  const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
+
+  const videoData = [
+    {
+      id: 1,
+      thumbnail: hairStylingImage,
+      title: 'Luxe Balayage',
+      stylist: 'Master Stylist Sarah',
+      price: '₹4,999.00',
+      videoUrl: '/api/placeholder/video/balayage', // Placeholder - replace with actual video
+      whatsappMessage: 'Hi B21! I\'d like to book the Luxe Balayage service.'
+    },
+    {
+      id: 2,
+      thumbnail: skinCareImage,
+      title: 'Keratin Treatment',
+      stylist: 'Senior Stylist Mike',
+      price: '₹6,999.00',
+      videoUrl: '/api/placeholder/video/keratin', // Placeholder - replace with actual video
+      whatsappMessage: 'Hi B21! I\'m interested in the Keratin Treatment.'
+    },
+    {
+      id: 3,
+      thumbnail: nailArtImage,
+      title: 'Signature Facial',
+      stylist: 'Aesthetician Lisa',
+      price: '₹3,999.00',
+      videoUrl: '/api/placeholder/video/facial', // Placeholder - replace with actual video
+      whatsappMessage: 'Hi B21! I\'d like to book the Signature Facial.'
+    }
+  ];
+
+  const whatsappNumber = "919876543210"; // Replace with actual number
+
+  const openVideoModal = (videoId: number) => {
+    setSelectedVideo(videoId);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeVideoModal = () => {
+    setSelectedVideo(null);
+    document.body.style.overflow = 'auto';
+  };
+
+  const selectedVideoData = videoData.find(video => video.id === selectedVideo);
+
+  return (
+    <>
+      <section id="gallery" className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-heading-lg mb-6">Watch Our Work</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              See our artistry in action through these transformation stories
+            </p>
+          </motion.div>
+
+          {/* Horizontal Scrolling Carousel */}
+          <div className="overflow-x-auto pb-4">
+            <div className="flex space-x-6 min-w-max">
+              {videoData.map((video, index) => (
+                <motion.div
+                  key={video.id}
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  viewport={{ once: true }}
+                  className="flex-shrink-0 w-80 cursor-pointer"
+                  onClick={() => openVideoModal(video.id)}
+                >
+                  {/* Video Thumbnail */}
+                  <div className="relative mb-4 group">
+                    <div className="relative h-96 rounded-2xl overflow-hidden">
+                      <img
+                        src={video.thumbnail}
+                        alt={video.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-black/30 transition-opacity duration-300 group-hover:bg-black/20"></div>
+                      
+                      {/* Play Button */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="w-16 h-16 bg-accent rounded-full flex items-center justify-center shadow-gold"
+                        >
+                          <Play size={24} className="text-accent-foreground ml-1" fill="currentColor" />
+                        </motion.div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Service Info */}
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                      <img
+                        src={video.thumbnail}
+                        alt={video.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg mb-1">{video.title}</h3>
+                      <p className="text-sm text-muted-foreground">{video.stylist}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Popup Modal */}
+      {selectedVideo && selectedVideoData && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          onClick={closeVideoModal}
+        >
+          <div className="relative w-full h-full max-w-4xl max-h-screen p-4">
+            {/* Close Button */}
+            <button
+              onClick={closeVideoModal}
+              className="absolute top-6 right-6 z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Mute/Unmute Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMuted(!isMuted);
+              }}
+              className="absolute top-6 left-6 z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+            >
+              {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+            </button>
+
+            {/* Video Container */}
+            <div className="relative w-full h-full flex flex-col">
+              {/* Video Area */}
+              <div className="flex-1 flex items-center justify-center mb-4">
+                {/* Placeholder for video - replace with actual video element */}
+                <div className="relative w-full max-w-2xl aspect-[9/16] bg-gray-900 rounded-lg overflow-hidden">
+                  <img
+                    src={selectedVideoData.thumbnail}
+                    alt={selectedVideoData.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <Play size={48} className="mx-auto mb-2" />
+                      <p>Video would play here</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Card */}
+              <motion.div
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="bg-black/70 backdrop-blur-md rounded-2xl p-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="w-16 h-16 rounded-lg overflow-hidden">
+                    <img
+                      src={selectedVideoData.thumbnail}
+                      alt={selectedVideoData.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-white text-xl font-semibold mb-1">
+                      {selectedVideoData.title}
+                    </h3>
+                    <p className="text-white/70 text-lg">
+                      {selectedVideoData.price}
+                    </p>
+                  </div>
+                </div>
+
+                <a
+                  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(selectedVideoData.whatsappMessage)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full btn-luxury flex items-center justify-center space-x-2"
+                >
+                  <span>Book This Service</span>
+                  <div className="w-5 h-5 bg-accent-foreground/20 rounded flex items-center justify-center">
+                    <span className="text-xs">🎁</span>
+                  </div>
+                </a>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </>
+  );
+};
+
+export default VideoGallery;
