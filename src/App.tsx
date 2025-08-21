@@ -16,6 +16,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/blog" element={<div>Blog page - TODO: implement proper routing</div>} />
+          <Route path="/blog/:slug" element={<div>Blog post page - TODO: implement proper routing</div>} />
+          <Route path="/admin" element={<div>Admin page - TODO: implement proper routing</div>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
