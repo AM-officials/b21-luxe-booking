@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import logoBlack from '../../B21 logo Black.png';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
@@ -19,11 +21,12 @@ const Header = () => {
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
   const navItems = [
-    { name: 'Services', href: '#services' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Beauty Tips', href: '#tips' },
-    { name: 'About Us', href: '#about' },
-  ];
+    { name: 'Services', href: '/services' },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Beauty Tips', href: '/tips' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'About Us', href: '/about' },
+  ] as const;
 
   return (
     <>
@@ -37,34 +40,26 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <h1 className="font-heading text-3xl font-bold text-foreground">
-                B21
-              </h1>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+              <RouterLink to="/" className="flex items-center gap-2">
+                <img src={logoBlack} alt="B21" className="h-12 w-auto" />
+              </RouterLink>
             </motion.div>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               {navItems.map((item, index) => (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                  className="text-foreground hover:text-accent transition-colors duration-300 font-medium"
-                >
-                  {item.name}
-                </motion.a>
+                <motion.span key={item.name} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + index * 0.1 }}>
+                  <RouterLink to={item.href} className="text-foreground hover:text-accent transition-colors duration-300 font-medium">
+                    {item.name}
+                  </RouterLink>
+                </motion.span>
               ))}
             </nav>
 
             {/* Book Now Button & Mobile Menu */}
             <div className="flex items-center space-x-4">
+              {/* Admin link removed from UI */}
               <motion.a
                 href={whatsappUrl}
                 target="_blank"
@@ -102,17 +97,11 @@ const Header = () => {
             <div className="fixed inset-0 bg-background/95 backdrop-blur-md">
               <div className="flex flex-col items-center justify-center h-full space-y-8">
                 {navItems.map((item, index) => (
-                  <motion.a
-                    key={item.name}
-                    href={item.href}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="text-2xl font-heading font-semibold text-foreground hover:text-accent transition-colors"
-                  >
-                    {item.name}
-                  </motion.a>
+                  <motion.span key={item.name} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => setIsMenuOpen(false)} className="text-2xl font-heading font-semibold">
+                    <RouterLink to={item.href} className="text-foreground hover:text-accent transition-colors">
+                      {item.name}
+                    </RouterLink>
+                  </motion.span>
                 ))}
                 <motion.a
                   href={whatsappUrl}

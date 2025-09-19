@@ -14,7 +14,64 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      posts: {
+        Row: {
+          slug: string
+          title: string
+          excerpt: string
+          category: string
+          author: string
+          published_date: string | null
+          featured_image: string
+          content: string
+          status: 'draft' | 'published'
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          slug: string
+          title: string
+          excerpt: string
+          category: string
+          author: string
+          published_date?: string | null
+          featured_image: string
+          content: string
+          status?: 'draft' | 'published'
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: Partial<Database['public']['Tables']['posts']['Insert']>
+        Relationships: []
+      }
+      popup_config: {
+        Row: {
+          id: number
+          enabled: boolean
+          delay_ms: number
+          title: string
+          subtitle: string
+          validity_text: string
+          body_text: string
+          whatsapp_number: string
+          whatsapp_message: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: number
+          enabled: boolean
+          delay_ms: number
+          title: string
+          subtitle: string
+          validity_text: string
+          body_text: string
+          whatsapp_number: string
+          whatsapp_message: string
+          updated_at?: string | null
+        }
+        Update: Partial<Database['public']['Tables']['popup_config']['Insert']>
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

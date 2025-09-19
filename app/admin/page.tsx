@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Search, Plus, Filter } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { posts as initialPosts } from '@/data/posts';
 import { Post } from '@/lib/types';
 import PostsTable from '@/components/admin/PostsTable';
 import PostEditorForm from '@/components/admin/PostEditorForm';
 import Modal from '@/components/ui/Modal';
 import { useToast, ToastContainer } from '@/components/ui/Toast';
+import { useAuth } from '@/context/AuthContext';
 
 type UIState = 'idle' | 'creating' | 'editing' | 'confirm-delete';
 
@@ -16,9 +18,34 @@ interface DeleteState {
   title: string;
 }
 
+// Post reducer for better state management
+type PostAction = 
+  | { type: 'ADD_POST', payload: Post }
+  | { type: 'UPDATE_POST', payload: Post }
+  | { type: 'DELETE_POST', payload: string };
+
+function postReducer(state: Post[], action: PostAction): Post[] {
+  switch (action.type) {
+    case 'ADD_POST':
+      return [...state, action.payload];
+    case 'UPDATE_POST':
+      return state.map(post => 
+        post.slug === action.payload.slug ? action.payload : post
+      );
+    case 'DELETE_POST':
+      return state.filter(post => post.slug !== action.payload);
+    default:
+      return state;
+  }
+}
+
 export default function AdminPage() {
-  // State management
-  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
+  
+  // Use reducer for posts state management
+  const [posts, dispatch] = useReducer(postReducer, initialPosts);
   const [uiState, setUIState] = useState<UIState>('idle');
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [deleteState, setDeleteState] = useState<DeleteState | null>(null);
@@ -27,6 +54,13 @@ export default function AdminPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
+  
+  // Check authentication and redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, router]);
   
   // Toast notifications
   const { toasts, removeToast, success, error } = useToast();
@@ -85,7 +119,7 @@ export default function AdminPage() {
 
   const confirmDelete = () => {
     if (deleteState) {
-      setPosts(current => current.filter(p => p.slug !== deleteState.slug));
+      dispatch({ type: 'DELETE_POST', payload: deleteState.slug });
       success(`Post "${deleteState.title}" has been deleted.`);
       setDeleteState(null);
       setUIState('idle');

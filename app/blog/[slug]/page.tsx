@@ -82,6 +82,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Back navigation */}
+      <div className="container py-4">
+        <Link href="/blog" className="flex items-center gap-2 text-gray-500 hover:text-accent mb-4">
+          <ArrowLeft size={16} /> Back to All Posts
+        </Link>
+      </div>
       {/* SEO structured data */}
       <script
         type="application/ld+json"

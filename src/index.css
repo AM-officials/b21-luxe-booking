@@ -108,7 +108,7 @@ Typography: Playfair Display (headings), Inter (body)
   }
 
   body {
-    @apply bg-background text-foreground font-body;
+  @apply bg-background text-foreground font-body overflow-x-hidden;
     font-family: var(--font-body);
   }
   

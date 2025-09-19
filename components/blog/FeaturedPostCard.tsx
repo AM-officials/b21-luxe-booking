@@ -1,6 +1,6 @@
 import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from '@/shims/next-image';
+import Link from '@/shims/next-link';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Post } from '@/lib/types';

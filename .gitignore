@@ -1,3 +1,30 @@
+# Dependencies
+node_modules/
+*.pnp
+.pnp.js
+
+# Production builds
+dist/
+build/
+out/
+dist-ssr/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+
+# Supabase local development
+supabase/.temp/
+supabase/.branches/
+supabase/logs/
+supabase/docker/
+supabase/seed.sql
+.supabase/
+
 # Logs
 logs
 *.log
@@ -7,12 +34,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
+# IDE and editor files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +44,95 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+*.local
+
+# Coverage and testing
+coverage/
+*.lcov
+.nyc_output
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional caches
+.npm
+.eslintcache
+.cache
+.parcel-cache
+
+# Next.js / Nuxt.js
+.next/
+.nuxt
+
+# Large media files (served from Supabase Storage)
+public/videos/
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.webm
+
+# Large images (keep smaller ones for GitHub)
+public/images/**/*.jpg
+public/images/**/*.jpeg
+public/images/**/*.png
+public/images/**/*.gif
+public/images/**/*.webp
+public/images/**/*.avif
+
+# Key files and certificates
+*.key
+*.pem
+*.p12
+*.cert
+*.crt
+
+# Service account files
+service-account*.json
+*-service-account.json
+
+# Development documentation (sensitive)
+SUPABASE_STORAGE_SETUP.md
+MEDIA_UPLOAD_INSTRUCTIONS.md
+DEPLOYMENT_NOTES.md
+
+# Development scripts
+scripts/
+*.ps1
+*.sh
+*.bat
+*.cmd
+
+# Vercel CLI
+.vercel
+
+# Temporary folders
+tmp/
+temp/
+*.backup
+*.bak
+*.tmp
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3

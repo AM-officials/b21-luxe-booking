@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link as RouterLink } from 'react-router-dom';
 import { MapPin, Phone, Mail, Instagram, Facebook, Twitter } from 'lucide-react';
 
 const Footer = () => {
@@ -44,11 +45,11 @@ const Footer = () => {
           >
             <h4 className="font-semibold text-lg mb-6">Our Services</h4>
             <ul className="space-y-3">
-              <li><a href="#services" className="text-white/80 hover:text-accent transition-colors">Hair Styling</a></li>
-              <li><a href="#services" className="text-white/80 hover:text-accent transition-colors">Skin Care</a></li>
-              <li><a href="#services" className="text-white/80 hover:text-accent transition-colors">Nail Art</a></li>
-              <li><a href="#services" className="text-white/80 hover:text-accent transition-colors">Bridal Packages</a></li>
-              <li><a href="#services" className="text-white/80 hover:text-accent transition-colors">Makeup Services</a></li>
+              <li><RouterLink to="/#services" className="text-white/80 hover:text-accent transition-colors">Hair Styling</RouterLink></li>
+              <li><RouterLink to="/#services" className="text-white/80 hover:text-accent transition-colors">Skin Care</RouterLink></li>
+              <li><RouterLink to="/#services" className="text-white/80 hover:text-accent transition-colors">Nail Art</RouterLink></li>
+              <li><RouterLink to="/#services" className="text-white/80 hover:text-accent transition-colors">Bridal Packages</RouterLink></li>
+              <li><RouterLink to="/#services" className="text-white/80 hover:text-accent transition-colors">Makeup Services</RouterLink></li>
             </ul>
           </motion.div>
 
@@ -61,11 +62,12 @@ const Footer = () => {
           >
             <h4 className="font-semibold text-lg mb-6">Quick Links</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-white/80 hover:text-accent transition-colors">About Us</a></li>
-              <li><a href="#gallery" className="text-white/80 hover:text-accent transition-colors">Gallery</a></li>
-              <li><a href="#" className="text-white/80 hover:text-accent transition-colors">Beauty Tips</a></li>
+              <li><RouterLink to="/#about" className="text-white/80 hover:text-accent transition-colors">About Us</RouterLink></li>
+              <li><RouterLink to="/#gallery" className="text-white/80 hover:text-accent transition-colors">Gallery</RouterLink></li>
+              <li><RouterLink to="/blog" className="text-white/80 hover:text-accent transition-colors">Blog</RouterLink></li>
               <li><a href="#" className="text-white/80 hover:text-accent transition-colors">Gift Cards</a></li>
               <li><a href="#" className="text-white/80 hover:text-accent transition-colors">Privacy Policy</a></li>
+              <li><RouterLink to="/admin" className="text-white/50 hover:text-white transition-colors">Admin</RouterLink></li>
             </ul>
           </motion.div>
 

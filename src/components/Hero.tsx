@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import heroImage from '@/assets/hero-salon.jpg';
 
 const Hero = () => {
@@ -6,16 +7,74 @@ const Hero = () => {
   const whatsappMessage = "Hello B21! I'd like to book an appointment.";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
+  // List of hero images located under public/images/hero
+  const heroImages = useMemo(() => ([
+    '/images/DSC05018.jpg',
+    '/images/DSC05021.jpg',
+    '/images/DSC05028.jpg',
+    '/images/DSC05036.jpg',
+    '/images/DSC05047.jpg',
+    '/images/DSC05069.jpg',
+  ]), []);
+
+  // In case any of the above images are missing, swap to a local fallback
+  const fallbackHero = (heroImage as unknown as string);
+
+  // Preload images to avoid flash
+  useEffect(() => {
+    heroImages.forEach(src => { const img = new Image(); img.src = src; });
+  }, [heroImages]);
+
+  // Auto-advance background
+  const [index, setIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState<number | null>(null);
+  const SLIDE_MS = 6000; // 6 seconds per slide
+  useEffect(() => {
+    const id = setInterval(() => setIndex(i => {
+      setPrevIndex(i);
+      return (i + 1) % heroImages.length;
+    }), SLIDE_MS);
+    return () => clearInterval(id);
+  }, [heroImages.length]);
+
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Video/Image */}
+  <section id="about" className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
+      {/* Background Slideshow */}
       <div className="absolute inset-0">
-        <img 
-          src={heroImage}
-          alt="Luxury salon interior"
-          className="w-full h-full object-cover"
+        {/* Previous image fades OUT while current fades IN to ensure no blank flash */}
+        {prevIndex !== null && (
+          <motion.img
+            key={`prev-${prevIndex}`}
+            src={heroImages[prevIndex] ?? fallbackHero}
+            alt="Previous hero slide"
+            className="absolute inset-0 w-full h-full object-cover"
+            initial={{ opacity: 1, scale: 1 }}
+            animate={{ opacity: 0, scale: 1.02 }}
+            transition={{ duration: 1.0 }}
+            onError={(e) => {
+              if (e.currentTarget.src !== fallbackHero) e.currentTarget.src = fallbackHero;
+            }}
+            aria-hidden
+          />
+        )}
+
+        {/* Current image fades IN */}
+        <motion.img
+          key={`curr-${index}`}
+          src={heroImages[index] ?? fallbackHero}
+          alt="B21 Luxe Salon ambience"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ opacity: 0, scale: 1.02 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.0 }}
+          onError={(e) => {
+            if (e.currentTarget.src !== fallbackHero) e.currentTarget.src = fallbackHero;
+          }}
         />
-        <div className="absolute inset-0 video-overlay"></div>
+        {/* Darken overlay for better text contrast */}
+        <div className="absolute inset-0 bg-black/45" />
+        {/* Optional decorative overlay if defined globally */}
+        <div className="absolute inset-0 video-overlay pointer-events-none"></div>
       </div>
 
       {/* Hero Content */}

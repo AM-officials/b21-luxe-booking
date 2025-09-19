@@ -1,43 +1,22 @@
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Play, X, Volume2, VolumeX } from 'lucide-react';
-import hairStylingImage from '@/assets/hair-styling.jpg';
-import skinCareImage from '@/assets/skin-care.jpg';
-import nailArtImage from '@/assets/nail-art.jpg';
+import { videos } from '@/lib/videoConfig';
 
 const VideoGallery = () => {
   const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
   const [isMuted, setIsMuted] = useState(false);
 
-  const videoData = [
-    {
-      id: 1,
-      thumbnail: hairStylingImage,
-      title: 'Luxe Balayage',
-      stylist: 'Master Stylist Sarah',
-      price: '₹4,999.00',
-      videoUrl: '/api/placeholder/video/balayage', // Placeholder - replace with actual video
-      whatsappMessage: 'Hi B21! I\'d like to book the Luxe Balayage service.'
-    },
-    {
-      id: 2,
-      thumbnail: skinCareImage,
-      title: 'Keratin Treatment',
-      stylist: 'Senior Stylist Mike',
-      price: '₹6,999.00',
-      videoUrl: '/api/placeholder/video/keratin', // Placeholder - replace with actual video
-      whatsappMessage: 'Hi B21! I\'m interested in the Keratin Treatment.'
-    },
-    {
-      id: 3,
-      thumbnail: nailArtImage,
-      title: 'Signature Facial',
-      stylist: 'Aesthetician Lisa',
-      price: '₹3,999.00',
-      videoUrl: '/api/placeholder/video/facial', // Placeholder - replace with actual video
-      whatsappMessage: 'Hi B21! I\'d like to book the Signature Facial.'
-    }
-  ];
+  // Use generated teasers/posters and original mp4s for now
+  const videoData = videos.map((v, i) => ({
+    id: i + 1,
+    thumbnail: v.poster,
+    title: v.title,
+    stylist: 'B21 Studio',
+    preview: v.teaser,
+    full: v.full,
+    whatsappMessage: `Hi B21! I'm interested in ${v.title}.`
+  }));
 
   const whatsappNumber = "919876543210"; // Replace with actual number
 
@@ -52,6 +31,30 @@ const VideoGallery = () => {
   };
 
   const selectedVideoData = videoData.find(video => video.id === selectedVideo);
+  const fullVideoRef = useRef<HTMLVideoElement | null>(null);
+  const previewRefs = useRef<HTMLVideoElement[]>([]);
+
+  // Sync mute state to full screen video
+  useEffect(()=>{
+    if(fullVideoRef.current) fullVideoRef.current.muted = isMuted;
+  },[isMuted, selectedVideo]);
+
+  // Pause offscreen preview videos for performance
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((ent) => {
+        const el = ent.target as HTMLVideoElement;
+        if (ent.isIntersecting) {
+          el.play().catch(() => {});
+        } else {
+          el.pause();
+        }
+      });
+    }, { threshold: 0.25 });
+    previewRefs.current.forEach(v => v && io.observe(v));
+    return () => io.disconnect();
+  }, []);
 
   return (
     <>
@@ -83,26 +86,32 @@ const VideoGallery = () => {
                   className="flex-shrink-0 w-80 cursor-pointer"
                   onClick={() => openVideoModal(video.id)}
                 >
-                  {/* Video Thumbnail */}
-                  <div className="relative mb-4 group">
-                    <div className="relative h-96 rounded-2xl overflow-hidden">
-                      <img
-                        src={video.thumbnail}
-                        alt={video.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-black/30 transition-opacity duration-300 group-hover:bg-black/20"></div>
-                      
-                      {/* Play Button */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="w-16 h-16 bg-accent rounded-full flex items-center justify-center shadow-gold"
-                        >
-                          <Play size={24} className="text-accent-foreground ml-1" fill="currentColor" />
-                        </motion.div>
-                      </div>
+                  {/* Video Preview (Autoplay muted) */}
+                  <div className="relative mb-4 group rounded-2xl overflow-hidden h-96">
+                    <video
+                      ref={(el)=>{ if(el) previewRefs.current[index] = el; }}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      src={video.preview}
+                      playsInline
+                      muted
+                      loop
+                      autoPlay
+                      preload="metadata"
+                      poster={video.thumbnail}
+                      onError={(e)=>{ // fallback poster if video fails
+                        const vid = e.currentTarget;
+                        vid.style.display='none';
+                        const img = document.createElement('img');
+                        img.src = video.thumbnail as any;
+                        img.className='w-full h-full object-cover';
+                        vid.parentElement?.appendChild(img);
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <motion.div whileHover={{ scale: 1.1 }} className="w-16 h-16 bg-accent rounded-full flex items-center justify-center shadow-gold">
+                        <Play size={24} className="text-accent-foreground ml-1" fill="currentColor" />
+                      </motion.div>
                     </div>
                   </div>
 
@@ -158,21 +167,18 @@ const VideoGallery = () => {
 
             {/* Video Container */}
             <div className="relative w-full h-full flex flex-col">
-              {/* Video Area */}
               <div className="flex-1 flex items-center justify-center mb-4">
-                {/* Placeholder for video - replace with actual video element */}
-                <div className="relative w-full max-w-2xl aspect-[9/16] bg-gray-900 rounded-lg overflow-hidden">
-                  <img
-                    src={selectedVideoData.thumbnail}
-                    alt={selectedVideoData.title}
-                    className="w-full h-full object-cover"
+                <div className="relative w-full max-w-2xl aspect-[9/16] bg-black rounded-lg overflow-hidden">
+                  <video
+                    ref={fullVideoRef}
+                    src={selectedVideoData.full}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    playsInline
+                    autoPlay
+                    loop
+                    muted={isMuted}
+                    controls={false}
                   />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-white text-center">
-                      <Play size={48} className="mx-auto mb-2" />
-                      <p>Video would play here</p>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -193,12 +199,8 @@ const VideoGallery = () => {
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-white text-xl font-semibold mb-1">
-                      {selectedVideoData.title}
-                    </h3>
-                    <p className="text-white/70 text-lg">
-                      {selectedVideoData.price}
-                    </p>
+                    <h3 className="text-white text-xl font-semibold mb-1">{selectedVideoData.title}</h3>
+                    <p className="text-white/70 text-sm">Tap sound icon to {isMuted ? 'unmute' : 'mute'}</p>
                   </div>
                 </div>
 
