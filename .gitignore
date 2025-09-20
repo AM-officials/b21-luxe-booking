@@ -91,13 +91,19 @@ public/videos/
 *.flv
 *.webm
 
-# Large images (keep smaller ones for GitHub)
+# Large images (keep smaller ones for GitHub, allow hero images)
 public/images/**/*.jpg
 public/images/**/*.jpeg
 public/images/**/*.png
 public/images/**/*.gif
 public/images/**/*.webp
 public/images/**/*.avif
+
+# But allow hero images specifically
+!public/images/DSC*.jpg
+!public/images/hero/*.jpg
+!public/images/hero/*.jpeg
+!public/images/hero/*.png
 
 # Key files and certificates
 *.key

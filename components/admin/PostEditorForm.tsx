@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Save, X, Upload } from 'lucide-react';
+import { Save, X, Upload, Image, Loader2 } from 'lucide-react';
 import { Post } from '@/lib/types';
+import { supabase } from '@/integrations/supabase/client';
 
 interface PostEditorFormProps {
   initial?: Post;
@@ -24,6 +25,7 @@ export default function PostEditorForm({ initial, onSave, onCancel, generateSlug
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(true);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   useEffect(() => {
     if (initial) {
@@ -59,6 +61,62 @@ export default function PostEditorForm({ initial, onSave, onCancel, generateSlug
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleImageUpload = async (file: File): Promise<string> => {
+    setIsUploadingImage(true);
+    try {
+      // Create unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      // Upload to Supabase Storage
+      const { error } = await supabase.storage
+        .from('blog-images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) throw error;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('blog-images')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error) {
+      console.error('Image upload error:', error);
+      throw new Error('Failed to upload image');
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    // Validate file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      alert('Image must be smaller than 10MB');
+      return;
+    }
+
+    try {
+      const imageUrl = await handleImageUpload(file);
+      setFormData(prev => ({ ...prev, featuredImage: imageUrl }));
+    } catch (error) {
+      alert('Failed to upload image. Please try again.');
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -171,25 +229,65 @@ export default function PostEditorForm({ initial, onSave, onCancel, generateSlug
 
       <div>
         <label className="block text-sm font-medium text-foreground mb-2">
-          Featured Image URL *
+          Featured Image *
         </label>
-        <div className="flex gap-2">
-          <input
-            type="url"
-            value={formData.featuredImage}
-            onChange={(e) => handleChange('featuredImage', e.target.value)}
-            className={`flex-1 px-3 py-2 border rounded-md bg-background text-foreground ${
-              errors.featuredImage ? 'border-red-500' : 'border-border'
-            }`}
-            placeholder="https://example.com/image.jpg"
-          />
-          <button
-            type="button"
-            className="px-4 py-2 border border-border rounded-md text-muted-foreground hover:text-foreground transition-colors"
-            title="Upload image (TODO: implement)"
-          >
-            <Upload className="h-4 w-4" />
-          </button>
+        <div className="space-y-3">
+          {/* Image Preview */}
+          {formData.featuredImage && (
+            <div className="relative">
+              <img 
+                src={formData.featuredImage} 
+                alt="Featured image preview" 
+                className="w-full h-48 object-cover rounded-md border border-border"
+                onError={(e) => {
+                  e.currentTarget.src = '/placeholder.svg';
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, featuredImage: '' }))}
+                className="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                title="Remove image"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+          
+          {/* Upload Controls */}
+          <div className="flex gap-2">
+            <input
+              type="url"
+              value={formData.featuredImage}
+              onChange={(e) => handleChange('featuredImage', e.target.value)}
+              className={`flex-1 px-3 py-2 border rounded-md bg-background text-foreground ${
+                errors.featuredImage ? 'border-red-500' : 'border-border'
+              }`}
+              placeholder="https://example.com/image.jpg or upload below"
+            />
+            <div className="relative">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                disabled={isUploadingImage}
+              />
+              <button
+                type="button"
+                disabled={isUploadingImage}
+                className="px-4 py-2 border border-border rounded-md text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 flex items-center gap-2"
+                title="Upload image"
+              >
+                {isUploadingImage ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Image className="h-4 w-4" />
+                )}
+                {isUploadingImage ? 'Uploading...' : 'Upload'}
+              </button>
+            </div>
+          </div>
         </div>
         {errors.featuredImage && <p className="text-red-500 text-sm mt-1">{errors.featuredImage}</p>}
       </div>

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
-// Resolve banner image (spaces in filename) using URL to avoid TS module typing issues
-const bannerImgUrl = new URL('../../Pop-up banner offer.webp', import.meta.url).href;
+// Use the banner image from public directory
+const bannerImgUrl = '/Pop-up banner offer.webp';
 
 const FestiveBanner = () => {
   const whatsappNumber = '919876543210'; // Replace with actual number
