@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// Optimized public paths (may not exist in dev/CI if optimization step is skipped)
-const menImgOptimized = '/images/optimized/men-pricing.jpg';
-const womenImgOptimized = '/images/optimized/women-pricing.jpg';
-// Fallbacks bundled by Vite
-import menImgFallback from '../../Men pricing.png';
-import womenImgFallback from '../../Women pricing.png';
+import menImg from '../../Men pricing.png';
+import womenImg from '../../Women pricing.png';
 
 interface PriceItem { service: string; price: string; }
 
@@ -54,7 +50,7 @@ const commonServices: PriceItem[] = [
 // On mobile keep overflow hidden to avoid horizontal scroll from decorative image
 const cardBase = 'relative rounded-[36px] sm:rounded-[40px] overflow-hidden sm:overflow-visible bg-[#eef0e4] shadow-lg p-6 sm:p-8 flex flex-col justify-between cursor-pointer min-h-[230px] sm:min-h-[260px] max-w-full';
 
-function PricingCard({ title, img, fallbackImg, items, open, onToggle }: { title: string; img: string; fallbackImg: string; items: PriceItem[]; open: boolean; onToggle: ()=>void; }) {
+function PricingCard({ title, img, items, open, onToggle }: { title: string; img: string; items: PriceItem[]; open: boolean; onToggle: ()=>void; }) {
   return (
     <motion.div layout onClick={onToggle} className={cardBase + ' group'} initial={false}>
       {/* Header Row */}
@@ -71,8 +67,6 @@ function PricingCard({ title, img, fallbackImg, items, open, onToggle }: { title
           src={img}
           alt={title}
           loading="lazy"
-          decoding="async"
-          onError={(e) => { if (e.currentTarget.src !== fallbackImg) e.currentTarget.src = fallbackImg; }}
           className="w-full h-56 object-cover object-center"
         />
       </div>
@@ -83,7 +77,6 @@ function PricingCard({ title, img, fallbackImg, items, open, onToggle }: { title
         alt={title}
         loading="lazy"
         decoding="async"
-        onError={(e) => { if (e.currentTarget.src !== fallbackImg) e.currentTarget.src = fallbackImg; }}
         className="hidden sm:block absolute right-2 md:right-4 bottom-0 h-[300px] md:h-[360px] w-auto object-contain pointer-events-none select-none drop-shadow-xl translate-y-8 group-hover:translate-y-4 transition-transform duration-500"
       />
 
@@ -146,8 +139,8 @@ export default function PricingSection(){
           <p className="mt-2 text-base sm:text-lg text-muted-foreground max-w-3xl">We've got your beauty needs covered</p>
         </div>
         <div className="grid md:grid-cols-2 gap-8 sm:gap-10">
-          <PricingCard title="MEN" img={menImgOptimized} fallbackImg={menImgFallback} items={menServices} open={openCard==='men'} onToggle={()=>setOpenCard(openCard==='men'?null:'men')} />
-          <PricingCard title="WOMEN" img={womenImgOptimized} fallbackImg={womenImgFallback} items={womenServices} open={openCard==='women'} onToggle={()=>setOpenCard(openCard==='women'?null:'women')} />
+          <PricingCard title="MEN" img={menImg} items={menServices} open={openCard==='men'} onToggle={()=>setOpenCard(openCard==='men'?null:'men')} />
+          <PricingCard title="WOMEN" img={womenImg} items={womenServices} open={openCard==='women'} onToggle={()=>setOpenCard(openCard==='women'?null:'women')} />
         </div>
       </div>
     </section>
