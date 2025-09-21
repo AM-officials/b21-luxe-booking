@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchPopupConfig, savePopupConfig } from '@/lib/supabaseApi';
+import { supabase } from '@/integrations/supabase/client';
+import { Upload, Image, Loader2, X } from 'lucide-react';
 
 type FormValues = {
   enabled: boolean;
@@ -18,7 +20,7 @@ type FormValues = {
 export default function OffersForm() {
   const qc = useQueryClient();
   const { data } = useQuery({ queryKey: ['popup_config'], queryFn: fetchPopupConfig });
-  const { register, handleSubmit, reset } = useForm<FormValues>({
+  const { register, handleSubmit, reset, setValue, watch } = useForm<FormValues>({
     defaultValues: {
       enabled: true,
       delay_ms: 3000,
@@ -31,6 +33,9 @@ export default function OffersForm() {
   banner_image: '/Pop-up banner offer.webp',
     },
   });
+
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const currentBannerImage = watch('banner_image');
 
   useEffect(() => {
     if (data) {
@@ -47,6 +52,62 @@ export default function OffersForm() {
       });
     }
   }, [data, reset]);
+
+  const handleImageUpload = async (file: File): Promise<string> => {
+    setIsUploadingImage(true);
+    try {
+      // Create unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `banner-${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      // Upload to Supabase Storage
+      const { error } = await supabase.storage
+        .from('banner-images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) throw error;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('banner-images')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error) {
+      console.error('Banner image upload error:', error);
+      throw new Error('Failed to upload banner image');
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    // Validate file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      alert('Image must be smaller than 10MB');
+      return;
+    }
+
+    try {
+      const imageUrl = await handleImageUpload(file);
+      setValue('banner_image', imageUrl);
+    } catch (error) {
+      alert('Failed to upload banner image. Please try again.');
+    }
+  };
 
   const mutation = useMutation({
     mutationFn: savePopupConfig,
@@ -97,9 +158,63 @@ export default function OffersForm() {
           <input className="w-full border rounded px-3 py-2 bg-background" {...register('whatsapp_message')} />
         </div>
         <div className="md:col-span-2">
-          <label className="block text-sm text-muted-foreground mb-1">Banner Image URL</label>
-          <input className="w-full border rounded px-3 py-2 bg-background" placeholder="/Pop-up banner offer.webp" {...register('banner_image')} />
-          <p className="text-xs text-muted-foreground mt-1">Provide relative path or full URL.</p>
+          <label className="block text-sm text-muted-foreground mb-1">Banner Image</label>
+          <div className="space-y-3">
+            {/* Image Preview */}
+            {currentBannerImage && (
+              <div className="relative">
+                <img 
+                  src={currentBannerImage} 
+                  alt="Banner image preview" 
+                  className="w-full h-32 object-cover rounded-md border border-border"
+                  onError={(e) => {
+                    e.currentTarget.src = '/placeholder.svg';
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setValue('banner_image', '')}
+                  className="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                  title="Remove image"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+            
+            {/* Upload Controls */}
+            <div className="flex gap-2">
+              <input
+                type="url"
+                {...register('banner_image')}
+                className="flex-1 border rounded px-3 py-2 bg-background"
+                placeholder="https://example.com/banner.jpg or upload below"
+              />
+              <div className="relative">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  disabled={isUploadingImage}
+                />
+                <button
+                  type="button"
+                  disabled={isUploadingImage}
+                  className="px-4 py-2 border border-border rounded-md text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 flex items-center gap-2"
+                  title="Upload banner image"
+                >
+                  {isUploadingImage ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Image className="h-4 w-4" />
+                  )}
+                  {isUploadingImage ? 'Uploading...' : 'Upload'}
+                </button>
+              </div>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">Upload an image or provide a URL. Recommended size: 400x300px</p>
         </div>
         <div className="md:col-span-2 flex justify-end">
           <button type="submit" className="px-5 py-2 bg-accent text-black rounded-md">Save</button>

@@ -61,16 +61,29 @@ const BookingPopup = () => {
             className="relative bg-background rounded-2xl shadow-luxury w-full max-w-sm sm:max-w-md overflow-hidden mx-2"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Banner image background (light) */}
-            <div
-              className="absolute inset-0 opacity-20 -z-0"
-              style={{
-                backgroundImage: `url(${(cfg as any)?.banner_image || (bannerFallback as unknown as string)})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              }}
-              aria-hidden="true"
-            />
+            {/* Banner image background */}
+            <div className="absolute inset-0 -z-0">
+              {(cfg as any)?.banner_image ? (
+                <img
+                  src={(cfg as any).banner_image}
+                  alt=""
+                  className="w-full h-full object-cover opacity-10"
+                  onError={(e) => {
+                    // Fallback to default banner if custom image fails
+                    e.currentTarget.src = bannerFallback as unknown as string;
+                  }}
+                />
+              ) : (
+                <div
+                  className="w-full h-full opacity-10"
+                  style={{
+                    backgroundImage: `url(${bannerFallback as unknown as string})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                />
+              )}
+            </div>
             {/* Close Button */}
             <button
               onClick={closePopup}
@@ -79,23 +92,39 @@ const BookingPopup = () => {
               <X size={16} />
             </button>
 
-            {/* Header */}
-            <div className="bg-gradient-gold/95 backdrop-blur p-5 sm:p-6 text-center relative">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
-                className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4"
-              >
-                <Gift size={32} className="text-background" />
-              </motion.div>
+            {/* Header with Banner Image */}
+            <div className="relative overflow-hidden">
+              {/* Banner Image Section */}
+              <div className="h-32 bg-gradient-gold relative overflow-hidden">
+                <img
+                  src={(cfg as any)?.banner_image || (bannerFallback as unknown as string)}
+                  alt="Special Offer Banner"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = bannerFallback as unknown as string;
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              </div>
               
-              <h3 className="text-2xl font-heading font-bold text-background mb-2">
-                {cfg?.title ?? 'Special Offer!'}
-              </h3>
-              <p className="text-background/90 font-semibold">
-                {cfg?.subtitle ?? '20% OFF Last-Minute Bookings'}
-              </p>
+              {/* Content Overlay */}
+              <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, type: "spring" }}
+                  className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-3"
+                >
+                  <Gift size={24} className="text-white" />
+                </motion.div>
+                
+                <h3 className="text-xl font-heading font-bold text-white mb-1 drop-shadow-lg">
+                  {cfg?.title ?? 'Special Offer!'}
+                </h3>
+                <p className="text-white/90 font-semibold text-sm drop-shadow">
+                  {cfg?.subtitle ?? '20% OFF Last-Minute Bookings'}
+                </p>
+              </div>
             </div>
 
             {/* Content */}
