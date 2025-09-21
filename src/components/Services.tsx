@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import hairStylingImage from '@/assets/hair-styling.jpg';
 import skinCareImage from '@/assets/skin-care.jpg';
 import nailArtImage from '@/assets/nail-art.jpg';
+import { useWhatsappConfig, buildWhatsAppUrl } from '@/lib/whatsapp';
 
 const Services = () => {
   const services = [
@@ -29,7 +30,7 @@ const Services = () => {
     }
   ];
 
-  const whatsappNumber = "919876543210"; // Replace with actual number
+  const { number: whatsappNumber } = useWhatsappConfig();
 
   return (
     <section id="services" className="py-20 bg-background">
@@ -78,10 +79,10 @@ const Services = () => {
                   </div>
                   
                   <a
-                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(service.whatsappMessage)}`}
+                    href={buildWhatsAppUrl(whatsappNumber, service.whatsappMessage)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-outline-luxury flex items-center space-x-2 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300"
+                    className="btn-outline-luxury flex items-center space-x-2 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300 text-sm md:text-base px-3 py-2"
                   >
                     <span>Book Now</span>
                     <ArrowRight size={16} />

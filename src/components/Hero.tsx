@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import heroImage from '@/assets/hero-salon.jpg';
+import { useWhatsappConfig } from '@/lib/whatsapp';
 
 const Hero = () => {
-  const whatsappNumber = "919876543210"; // Replace with actual number
-  const whatsappMessage = "Hello B21! I'd like to book an appointment.";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+  const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.");
 
   // List of hero images located under public/images/hero
   const heroImages = useMemo(() => ([
@@ -108,7 +107,7 @@ const Hero = () => {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-luxury text-xl px-12 py-6 inline-block hover:scale-105 transition-transform duration-300"
+            className="btn-luxury text-base md:text-xl px-6 md:px-12 py-3 md:py-6 inline-block hover:scale-105 transition-transform duration-300"
           >
             Book an Appointment
           </a>

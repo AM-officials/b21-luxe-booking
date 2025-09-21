@@ -13,7 +13,7 @@ import Testimonials from '@/components/Testimonials';
 import InstagramFeed from '@/components/InstagramFeed';
 import Footer from '@/components/Footer';
 import BookingPopup from '@/components/BookingPopup';
-import ReviewsSection from '@/components/ReviewsSection';
+// import ReviewsSection from '@/components/ReviewsSection';
 
 const Index = () => {
   const location = useLocation();
@@ -68,7 +68,7 @@ const Index = () => {
   <SectionSeparator style="curve" />
   <FestiveBanner />
   <VideoGallery />
-  <ReviewsSection />
+  {/* <ReviewsSection /> */}
   <SectionSeparator style="angle" />
   <Testimonials />
   <InstagramFeed />

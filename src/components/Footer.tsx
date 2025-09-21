@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
 import { Link as RouterLink } from 'react-router-dom';
-import { MapPin, Phone, Mail, Instagram, Facebook, Twitter } from 'lucide-react';
+import { MapPin, Phone, Mail, Instagram } from 'lucide-react';
+import { useWhatsappConfig } from '@/lib/whatsapp';
 
 const Footer = () => {
-  const whatsappNumber = "919876543210"; // Replace with actual number
-  const whatsappMessage = "Hello B21! I'd like to get in touch.";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+  const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to get in touch.");
 
   return (
     <footer className="bg-luxury-black text-white py-16">
@@ -24,14 +23,8 @@ const Footer = () => {
               and style in the heart of the city.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors">
+              <a href="https://www.instagram.com/b21india/?hl=en" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors" aria-label="Instagram">
                 <Instagram size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors">
-                <Facebook size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors">
-                <Twitter size={18} />
               </a>
             </div>
           </motion.div>
@@ -67,7 +60,6 @@ const Footer = () => {
               <li><RouterLink to="/blog" className="text-white/80 hover:text-accent transition-colors">Blog</RouterLink></li>
               <li><a href="#" className="text-white/80 hover:text-accent transition-colors">Gift Cards</a></li>
               <li><a href="#" className="text-white/80 hover:text-accent transition-colors">Privacy Policy</a></li>
-              <li><RouterLink to="/admin" className="text-white/50 hover:text-white transition-colors">Admin</RouterLink></li>
             </ul>
           </motion.div>
 
@@ -83,15 +75,13 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin size={18} className="text-accent mt-1 flex-shrink-0" />
                 <div className="text-white/80">
-                  <p>123 Luxury Avenue</p>
-                  <p>Fashion District, Mumbai 400001</p>
+                  <p>Opposite BMC Bhawani Mall Exitgate, Saheed Nagar</p>
+                  <p>Bhubaneswar, Odisha 751007</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone size={18} className="text-accent flex-shrink-0" />
-                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-accent transition-colors">
-                  +91 98765 43210
-                </a>
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-accent transition-colors">80930 81930</a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail size={18} className="text-accent flex-shrink-0" />
@@ -99,6 +89,12 @@ const Footer = () => {
                   hello@b21salon.com
                 </a>
               </div>
+              <div>
+                <a href="https://share.google/QOWqE1CFrYfvC28co" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-accent transition-colors">
+                  <MapPin size={16} /> Get Directions
+                </a>
+              </div>
+              <div className="text-xs text-white/60">Opens 10:30 am Sun</div>
             </div>
           </motion.div>
         </div>

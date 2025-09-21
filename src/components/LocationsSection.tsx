@@ -1,16 +1,58 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FranchiseForm from './FranchiseForm';
+import { useWhatsappConfig } from '@/lib/whatsapp';
+import { Instagram } from 'lucide-react';
 
-const locations = [
-  { city: 'New York', address: '758 5th Avenue, NY 10057', phone: '+1-800-356-8933' },
-  { city: 'Los Angeles', address: '1024 Sunset Blvd, CA 90028', phone: '+1-800-356-8933' },
-  { city: 'Chicago', address: '220 Michigan Ave, IL 60601', phone: '+1-800-356-8933' },
-  { city: 'Miami', address: '44 Ocean Dr, FL 33139', phone: '+1-800-356-8933' },
+type Franchise = {
+  name: string;
+  ig: string;
+  number: string;
+  locationUrl: string;
+  address: string;
+  hours: string;
+  image?: string; // placeholder to be filled later
+  note?: string;
+};
+
+const locations: Franchise[] = [
+  {
+    name: 'B21',
+    ig: 'https://www.instagram.com/b21india/?hl=en',
+    number: '80930 81930',
+    locationUrl: 'https://share.google/QOWqE1CFrYfvC28co',
+    address: 'Opposite BMC Bhawani Mall Exitgate, Saheed Nagar, Bhubaneswar, Odisha 751007',
+    hours: 'Opens 10:30 am Sun',
+  },
+  {
+    name: 'B21 Hair Beauty Spa',
+    ig: 'https://www.instagram.com/b21india/?hl=en',
+    number: '90900 34567',
+    locationUrl: 'https://share.google/te5Fdz3Uftt5dW4lK',
+    address: 'Located in: Subham Market Complex\nIndustrial Area, Kharvela Nagar, Bhubaneswar, Odisha 751001',
+    hours: 'Opens 10:30 am Sun',
+  },
+  {
+    name: 'B21 Salon',
+    ig: 'https://www.instagram.com/b21jaydevvihar/?hl=en',
+    number: '081178 40978',
+    locationUrl: 'https://share.google/vbTRtK4jLdRkBZoNd',
+    address: '4762 Biju, Plot no - 369, Biju Pattnaik College Rd, Jayadev Vihar, Bhubaneswar, Odisha 751015',
+    hours: 'Opens 10:30 am Sun',
+  },
+  {
+    name: 'B21 Ladies Salon',
+    ig: 'https://www.instagram.com/b21bhadrak/?hl=en',
+    number: '90904 49700',
+    locationUrl: 'https://share.google/vN2l0DjDiW2abnolU',
+    address: 'Plot No 1232/2802/4027, Bypass Chapulia Road, Bhadrak, Odisha 756101',
+    hours: 'Opens 10:30 am Sun',
+  },
 ];
 
 export default function LocationsSection(){
   const [open,setOpen]=useState(false);
+  const { url: waUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.");
   return (
     <section id="locations" className="py-20 sm:py-24 bg-[#f6f7ed]">
       <div className="container mx-auto px-4">
@@ -27,21 +69,36 @@ export default function LocationsSection(){
             </div>
             <div>
               <h3 className="font-heading text-xl tracking-wide mb-4">LOCATION</h3>
-              <p className="text-sm leading-relaxed">+1-800-356-8933<br/>booking@domain.com<br/>In the heart of NYC:<br/>758 5th Avenue, New York, NY 10057</p>
-              <button className="mt-6 px-6 py-3 rounded-md bg-black text-white text-xs tracking-widest hover:bg-neutral-800">Book an appointment</button>
+              <p className="text-sm leading-relaxed">Call/WhatsApp for bookings<br/>Opens 10:30AM Daily</p>
+              <a href={waUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block px-6 py-3 rounded-md bg-black text-white text-xs tracking-widest hover:bg-neutral-800">Book an appointment</a>
             </div>
           </div>
         </div>
 
         {/* Other Locations */}
-        <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-8 text-center">Other Locations</h2>
+  <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-8 text-center">Our Locations</h2>
         <div className="overflow-x-auto -mx-4 px-4 pb-4 sm:pb-0">
           <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-5 min-w-max sm:min-w-0">
-            {locations.map(l => (
-              <div key={l.city} className="flex-shrink-0 w-64 sm:w-auto p-6 rounded-3xl bg-white shadow-sm border border-black/5 hover:shadow-lg transition">
-                <h3 className="font-semibold tracking-wide mb-2">{l.city}</h3>
-                <p className="text-sm text-neutral-600 leading-relaxed">{l.address}</p>
-                <p className="mt-3 text-xs font-medium">{l.phone}</p>
+            {locations.map((l) => (
+              <div key={l.name} className="flex-shrink-0 w-72 sm:w-auto p-0 rounded-3xl bg-white shadow-sm border border-black/5 hover:shadow-lg transition overflow-hidden">
+                {/* Image placeholder */}
+                <div className="h-36 bg-neutral-200 flex items-center justify-center text-neutral-500 text-xs">
+                  Image placeholder
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center justify-between gap-3 mb-1">
+                    <h3 className="font-semibold tracking-wide">{l.name}</h3>
+                    <a href={l.ig} target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:text-pink-700" aria-label="Instagram">
+                      <Instagram size={18} />
+                    </a>
+                  </div>
+                  <p className="text-sm text-neutral-600 whitespace-pre-line leading-relaxed">{l.address}</p>
+                  <p className="mt-2 text-xs font-medium">{l.hours}</p>
+                  <div className="mt-4 grid grid-cols-2 gap-2">
+                    <a href={`tel:${l.number.replace(/\s/g, '')}`} className="px-3 py-2 rounded-md bg-black text-white text-[11px] tracking-widest text-center">Call Us</a>
+                    <a href={l.locationUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-2 rounded-md border text-[11px] tracking-widest text-center">Get directions</a>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

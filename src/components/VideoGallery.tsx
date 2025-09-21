@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Play, X, Volume2, VolumeX } from 'lucide-react';
 import { videos } from '@/lib/videoConfig';
+import { useWhatsappConfig, buildWhatsAppUrl } from '@/lib/whatsapp';
 
 const VideoGallery = () => {
   const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
@@ -18,7 +19,7 @@ const VideoGallery = () => {
     whatsappMessage: `Hi B21! I'm interested in ${v.title}.`
   }));
 
-  const whatsappNumber = "919876543210"; // Replace with actual number
+  const { number: whatsappNumber } = useWhatsappConfig();
 
   const openVideoModal = (videoId: number) => {
     setSelectedVideo(videoId);
@@ -145,7 +146,7 @@ const VideoGallery = () => {
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
           onClick={closeVideoModal}
         >
-          <div className="relative w-full h-full max-w-4xl max-h-screen p-4">
+          <div className="relative w-full h-full max-h-screen p-4 md:p-0 md:max-w-none">
             {/* Close Button */}
             <button
               onClick={closeVideoModal}
@@ -165,29 +166,41 @@ const VideoGallery = () => {
               {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
             </button>
 
-            {/* Video Container */}
+            {/* Video Container and CTA */}
             <div className="relative w-full h-full flex flex-col">
-              <div className="flex-1 flex items-center justify-center mb-4">
-                <div className="relative w-full max-w-2xl aspect-[9/16] bg-black rounded-lg overflow-hidden">
+              <div className="flex-1 flex items-center justify-center px-0 md:px-0">
+                <div className="relative w-full md:w-auto max-w-full md:max-w-none bg-black md:bg-transparent rounded-lg md:rounded-none overflow-hidden md:overflow-visible flex items-center justify-center">
                   <video
                     ref={fullVideoRef}
                     src={selectedVideoData.full}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="w-full h-full object-contain md:h-[94vh] md:max-h-[94vh] md:w-auto md:max-w-[96vw]"
                     playsInline
                     autoPlay
                     loop
                     muted={isMuted}
                     controls={false}
                   />
+
+                  {/* Floating CTA button on desktop only */}
+                  <a
+                    href={buildWhatsAppUrl(whatsappNumber, selectedVideoData.whatsappMessage)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e)=>e.stopPropagation()}
+                    className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 hover:bg-white text-black text-xs font-semibold absolute bottom-4 right-4 shadow-lg"
+                    aria-label="Book This Service"
+                  >
+                    <span>Book</span>
+                  </a>
                 </div>
               </div>
 
-              {/* Bottom Card */}
+              {/* Keep the full-width bottom card for mobile only */}
               <motion.div
                 initial={{ y: 100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="bg-black/70 backdrop-blur-md rounded-2xl p-6"
+                className="md:hidden bg-black/70 backdrop-blur-md rounded-t-2xl p-4"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center space-x-4 mb-4">
@@ -199,21 +212,18 @@ const VideoGallery = () => {
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-white text-xl font-semibold mb-1">{selectedVideoData.title}</h3>
-                    <p className="text-white/70 text-sm">Tap sound icon to {isMuted ? 'unmute' : 'mute'}</p>
+                    <h3 className="text-white text-lg font-semibold mb-1">{selectedVideoData.title}</h3>
+                    <p className="text-white/70 text-xs">Tap sound icon to {isMuted ? 'unmute' : 'mute'}</p>
                   </div>
                 </div>
 
                 <a
-                  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(selectedVideoData.whatsappMessage)}`}
+                  href={buildWhatsAppUrl(whatsappNumber, selectedVideoData.whatsappMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full btn-luxury flex items-center justify-center space-x-2"
+                  className="w-full btn-luxury flex items-center justify-center"
                 >
-                  <span>Book This Service</span>
-                  <div className="w-5 h-5 bg-accent-foreground/20 rounded flex items-center justify-center">
-                    <span className="text-xs">🎁</span>
-                  </div>
+                  Book This Service
                 </a>
               </motion.div>
             </div>

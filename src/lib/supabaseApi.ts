@@ -39,7 +39,8 @@ export async function upsertPost(post: Post): Promise<Post> {
   };
   const { data, error } = await supabase
     .from('posts')
-    .upsert(row)
+    // Explicitly set conflict target on slug to avoid 409 conflicts
+    .upsert(row, { onConflict: 'slug' })
     .select('*')
     .single();
   if (error) throw error;

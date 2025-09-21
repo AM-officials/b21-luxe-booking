@@ -23,16 +23,6 @@ CREATE POLICY "Allow all operations on popup_config for anon users"
     USING (true)
     WITH CHECK (true);
 
--- Create blog_images storage bucket for image uploads
-INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES (
-    'blog-images', 
-    'blog-images', 
-    true, 
-    10485760, -- 10MB limit
-    ARRAY['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
-) ON CONFLICT (id) DO NOTHING;
-
 -- Create banner-images storage bucket for popup banner uploads
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES (
@@ -56,3 +46,18 @@ CREATE POLICY "Allow anon access to banner-images"
     FOR ALL
     USING (bucket_id = 'banner-images')
     WITH CHECK (bucket_id = 'banner-images');
+
+-- Drop any existing conflicting policies first
+DROP POLICY IF EXISTS "Allow anon access to blog-images" ON storage.objects;
+DROP POLICY IF EXISTS "Allow anon access to banner-images" ON storage.objects;
+
+-- Recreate policies with correct syntax
+CREATE POLICY "Enable anon access for blog-images" ON storage.objects
+FOR ALL TO anon
+USING (bucket_id = 'blog-images')
+WITH CHECK (bucket_id = 'blog-images');
+
+CREATE POLICY "Enable anon access for banner-images" ON storage.objects
+FOR ALL TO anon  
+USING (bucket_id = 'banner-images')
+WITH CHECK (bucket_id = 'banner-images');

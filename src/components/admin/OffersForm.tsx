@@ -17,7 +17,12 @@ type FormValues = {
   banner_image: string;
 };
 
-export default function OffersForm() {
+type OffersFormProps = {
+  onSuccess?: (message: string) => void;
+  onError?: (message: string) => void;
+};
+
+export default function OffersForm({ onSuccess, onError }: OffersFormProps = {}) {
   const qc = useQueryClient();
   const { data } = useQuery({ queryKey: ['popup_config'], queryFn: fetchPopupConfig });
   const { register, handleSubmit, reset, setValue, watch } = useForm<FormValues>({
@@ -36,6 +41,21 @@ export default function OffersForm() {
 
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const currentBannerImage = watch('banner_image');
+
+  // Debug function to test Supabase connection
+  const testSupabaseConnection = async () => {
+    try {
+      console.log('Testing Supabase connection...');
+      const { data: buckets, error } = await supabase.storage.listBuckets();
+      if (error) {
+        console.error('Supabase connection error:', error);
+      } else {
+        console.log('Available buckets:', buckets.map(b => b.name));
+      }
+    } catch (err) {
+      console.error('Connection test failed:', err);
+    }
+  };
 
   useEffect(() => {
     if (data) {
@@ -61,25 +81,50 @@ export default function OffersForm() {
       const fileName = `banner-${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
       const filePath = `${fileName}`;
 
-      // Upload to Supabase Storage
-      const { error } = await supabase.storage
-        .from('banner-images')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
+      console.log('Uploading banner image:', filePath);
 
-      if (error) throw error;
+      // Try banner-images bucket first, fallback to blog-images if it doesn't exist
+      let uploadResult;
+      let bucketName = 'banner-images';
+
+      try {
+        uploadResult = await supabase.storage
+          .from('banner-images')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false
+          });
+      } catch (bucketError) {
+        console.log('banner-images bucket not found, using blog-images as fallback');
+        bucketName = 'blog-images';
+        uploadResult = await supabase.storage
+          .from('blog-images')
+          .upload(`banners/${filePath}`, file, {
+            cacheControl: '3600',
+            upsert: false
+          });
+      }
+
+      const { data, error } = uploadResult;
+
+      if (error) {
+        console.error('Upload error:', error);
+        throw error;
+      }
+
+      console.log('Upload successful to bucket:', bucketName);
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
-        .from('banner-images')
-        .getPublicUrl(filePath);
+        .from(bucketName)
+        .getPublicUrl(bucketName === 'blog-images' ? `banners/${filePath}` : filePath);
+
+      console.log('Public URL generated:', publicUrl);
 
       return publicUrl;
     } catch (error) {
       console.error('Banner image upload error:', error);
-      throw new Error('Failed to upload banner image');
+      throw new Error('Failed to upload banner image: ' + (error as any).message);
     } finally {
       setIsUploadingImage(false);
     }
@@ -91,7 +136,7 @@ export default function OffersForm() {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file');
+      alert('Please select an image file (JPG, PNG, WebP, GIF)');
       return;
     }
 
@@ -101,17 +146,26 @@ export default function OffersForm() {
       return;
     }
 
+    console.log('Selected file:', file.name, 'Type:', file.type, 'Size:', file.size);
+
     try {
       const imageUrl = await handleImageUpload(file);
       setValue('banner_image', imageUrl);
+      console.log('Banner image updated successfully:', imageUrl);
     } catch (error) {
-      alert('Failed to upload banner image. Please try again.');
+      console.error('Upload failed:', error);
+      const errorMessage = (error as any).message || 'Unknown error occurred';
+      alert('Failed to upload banner image: ' + errorMessage + '\n\nPlease check:\n1. Internet connection\n2. File is a valid image\n3. Try a smaller file size');
     }
   };
 
   const mutation = useMutation({
     mutationFn: savePopupConfig,
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['popup_config'] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['popup_config'] });
+      onSuccess?.('Popup settings saved');
+    },
+    onError: () => onError?.('Failed to save popup settings'),
   });
 
   const onSubmit = (values: FormValues) => {
@@ -215,6 +269,15 @@ export default function OffersForm() {
             </div>
           </div>
           <p className="text-xs text-muted-foreground mt-1">Upload an image or provide a URL. Recommended size: 400x300px</p>
+          
+          {/* Temporary debug button */}
+          <button
+            type="button"
+            onClick={testSupabaseConnection}
+            className="mt-2 px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Test Supabase Connection (Check Console)
+          </button>
         </div>
         <div className="md:col-span-2 flex justify-end">
           <button type="submit" className="px-5 py-2 bg-accent text-black rounded-md">Save</button>

@@ -37,32 +37,61 @@ const InstagramFeed = () => {
           </p>
         </motion.div>
 
-        {/* Instagram Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {instagramPosts.map((post, index) => (
-            <motion.div
-              key={post.id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="relative group cursor-pointer aspect-square rounded-lg overflow-hidden"
-            >
-              <img
-                src={post.image}
-                alt={post.caption}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <div className="text-white text-center p-4">
-                  <Instagram size={24} className="mx-auto mb-2" />
-                  <p className="text-sm font-medium">{post.caption}</p>
+        {/* Instagram Grid: single-row carousel on mobile, two rows on desktop */}
+        <div className="mb-8">
+          {/* Mobile: horizontal scroll, single row */}
+          <div className="md:hidden -mx-4 px-4 overflow-x-auto">
+            <div className="flex gap-4">
+              {instagramPosts.map((post, index) => (
+                <motion.div
+                  key={post.id}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="relative group cursor-pointer aspect-square rounded-lg overflow-hidden w-40 flex-shrink-0"
+                >
+                  <img
+                    src={post.image}
+                    alt={post.caption}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="text-white text-center p-4">
+                      <Instagram size={24} className="mx-auto mb-2" />
+                      <p className="text-sm font-medium">{post.caption}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop: two-row grid */}
+          <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-4">
+            {instagramPosts.map((post, index) => (
+              <motion.div
+                key={post.id}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="relative group cursor-pointer aspect-square rounded-lg overflow-hidden"
+              >
+                <img
+                  src={post.image}
+                  alt={post.caption}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="text-white text-center p-4">
+                    <Instagram size={24} className="mx-auto mb-2" />
+                    <p className="text-sm font-medium">{post.caption}</p>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Follow Button */}
@@ -74,10 +103,10 @@ const InstagramFeed = () => {
           className="text-center"
         >
           <a
-            href="https://instagram.com/b21salon" // Replace with actual Instagram profile
+            href="https://www.instagram.com/b21india/?hl=en"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-outline-luxury inline-flex items-center space-x-2"
+            className="inline-flex items-center space-x-2 px-6 py-3 rounded-md text-white font-medium shadow-md hover:shadow-lg transition-shadow bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400"
           >
             <Instagram size={20} />
             <span>Follow Us</span>

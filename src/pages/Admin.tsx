@@ -78,7 +78,7 @@ export default function AdminPage() {
 
         <div className="mt-12">
           <h2 className="font-heading text-2xl font-bold mb-4">Site Settings</h2>
-          <OffersForm />
+          <OffersForm onSuccess={(msg) => success(msg)} onError={(msg) => error(msg)} />
         </div>
 
         <Modal isOpen={uiState === 'creating' || uiState === 'editing'} onClose={() => setUIState('idle')} title={uiState === 'creating' ? 'Create Post' : 'Edit Post'} size="xl">

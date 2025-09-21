@@ -4,6 +4,7 @@ import { X, Clock, Gift } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPopupConfig } from '@/lib/supabaseApi';
 import bannerFallback from '@/assets/hero-salon.jpg';
+import { useWhatsappConfig } from '@/lib/whatsapp';
 
 const BookingPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -14,6 +15,9 @@ const BookingPopup = () => {
     retry: false, // avoid noisy DNS retry loops in local/offline
     staleTime: 5 * 60 * 1000,
   });
+
+  // Centralized WhatsApp URL built from CMS config
+  const { url: whatsappUrl } = useWhatsappConfig();
 
   useEffect(() => {
     // Start timer only after loading screen finished (appLoaded event)
@@ -35,9 +39,7 @@ const BookingPopup = () => {
     return cleanup;
   }, [cfg]);
 
-  const whatsappNumber = cfg?.whatsapp_number || "919876543210"; // default
-  const whatsappMessage = cfg?.whatsapp_message || "Hi B21! I'm interested in your 20% off last-minute booking offer.";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+  // WhatsApp number/message handled by useWhatsappConfig()
 
   const closePopup = () => {
     setIsVisible(false);
@@ -58,32 +60,10 @@ const BookingPopup = () => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="relative bg-background rounded-2xl shadow-luxury w-full max-w-sm sm:max-w-md overflow-hidden mx-2"
+            className="relative bg-background rounded-2xl shadow-luxury w-full max-w-sm sm:max-w-md overflow-hidden mx-2 outline-none focus:outline-none"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Banner image background */}
-            <div className="absolute inset-0 -z-0">
-              {(cfg as any)?.banner_image ? (
-                <img
-                  src={(cfg as any).banner_image}
-                  alt=""
-                  className="w-full h-full object-cover opacity-10"
-                  onError={(e) => {
-                    // Fallback to default banner if custom image fails
-                    e.currentTarget.src = bannerFallback as unknown as string;
-                  }}
-                />
-              ) : (
-                <div
-                  className="w-full h-full opacity-10"
-                  style={{
-                    backgroundImage: `url(${bannerFallback as unknown as string})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
-                />
-              )}
-            </div>
+            {/* Background removed to prevent dual banner conflicts */}
             {/* Close Button */}
             <button
               onClick={closePopup}
@@ -158,8 +138,7 @@ const BookingPopup = () => {
               </div>
             </div>
 
-            {/* Decorative Elements */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-gold"></div>
+            {/* Decorative Elements removed per design request */}
           </motion.div>
         </motion.div>
       )}

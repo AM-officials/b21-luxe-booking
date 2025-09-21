@@ -3,6 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import logoBlack from '../../B21 logo Black.png';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useWhatsappConfig } from '@/lib/whatsapp';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,9 +17,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const whatsappNumber = "919876543210"; // Replace with actual number
-  const whatsappMessage = "Hello B21! I'd like to book an appointment.";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+  const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.");
 
   const navItems = [
     { name: 'Services', href: '/services' },
@@ -67,7 +66,7 @@ const Header = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 }}
-                className="btn-luxury hidden md:inline-flex items-center"
+                className="btn-luxury hidden md:inline-flex items-center md:px-6 md:py-3"
               >
                 Book Now
               </motion.a>

@@ -1,12 +1,11 @@
 import { motion } from 'framer-motion';
+import { useWhatsappConfig } from '@/lib/whatsapp';
 
 // Use the banner image from public directory
 const bannerImgUrl = '/Pop-up banner offer.webp';
 
 const FestiveBanner = () => {
-  const whatsappNumber = '919876543210'; // Replace with actual number
-  const whatsappMessage = "Hi B21! I'm interested in your Festive Glow offers.";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+  const { url: whatsappUrl } = useWhatsappConfig("Hi B21! I'm interested in your Festive Glow offers.");
 
   return (
     <section className="relative py-20 md:py-28 overflow-hidden" aria-labelledby="festive-heading">
