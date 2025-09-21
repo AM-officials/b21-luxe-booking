@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run optimize:images && vite build",
+  "build": "(npm run optimize:images || echo optimize:images skipped) && vite build",
     "postbuild": "echo Build complete",
     "optimize:images": "node scripts/optimize-images.mjs",
     "build:dev": "vite build --mode development",
