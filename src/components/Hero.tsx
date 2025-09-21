@@ -8,12 +8,13 @@ const Hero = () => {
 
   // List of hero images located under public/images/hero
   const heroImages = useMemo(() => ([
-    '/images/DSC05018.jpg',
-    '/images/DSC05021.jpg',
-    '/images/DSC05028.jpg',
-    '/images/DSC05036.jpg',
-    '/images/DSC05047.jpg',
-    '/images/DSC05069.jpg',
+    // Prefer optimized images if present
+    '/images/optimized/DSC05018.jpg',
+    '/images/optimized/DSC05021.jpg',
+    '/images/optimized/DSC05028.jpg',
+    '/images/optimized/DSC05036.jpg',
+    '/images/optimized/DSC05047.jpg',
+    '/images/optimized/DSC05069.jpg',
   ]), []);
 
   // In case any of the above images are missing, swap to a local fallback
@@ -53,6 +54,8 @@ const Hero = () => {
             onError={(e) => {
               if (e.currentTarget.src !== fallbackHero) e.currentTarget.src = fallbackHero;
             }}
+            decoding="async"
+            fetchPriority="low"
             aria-hidden
           />
         )}
@@ -69,6 +72,8 @@ const Hero = () => {
           onError={(e) => {
             if (e.currentTarget.src !== fallbackHero) e.currentTarget.src = fallbackHero;
           }}
+          decoding="async"
+          fetchPriority="high"
         />
         {/* Darken overlay for better text contrast */}
         <div className="absolute inset-0 bg-black/45" />

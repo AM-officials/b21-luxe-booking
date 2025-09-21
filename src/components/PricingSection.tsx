@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import menImg from '../../Men pricing.png';
-import womenImg from '../../Women pricing.png';
+// Use optimized versions generated into public/images/optimized when available
+const menImg = '/images/optimized/men-pricing.jpg';
+const womenImg = '/images/optimized/women-pricing.jpg';
 
 interface PriceItem { service: string; price: string; }
 
@@ -76,6 +77,7 @@ function PricingCard({ title, img, items, open, onToggle }: { title: string; img
         src={img}
         alt={title}
         loading="lazy"
+        decoding="async"
         className="hidden sm:block absolute right-2 md:right-4 bottom-0 h-[300px] md:h-[360px] w-auto object-contain pointer-events-none select-none drop-shadow-xl translate-y-8 group-hover:translate-y-4 transition-transform duration-500"
       />
 
