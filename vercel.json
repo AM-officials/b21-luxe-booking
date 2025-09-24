@@ -4,7 +4,7 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/((?!api).*)",
+      "source": "/((?!api|assets|images|favicon\\.ico|robots\\.txt|sitemap\\.xml|manifest\\.webmanifest|.*\\.(?:png|jpg|jpeg|gif|svg|webp|avif|ico|txt|json)).*)",
       "destination": "/index.html"
     }
   ],
@@ -22,7 +22,7 @@
       "source": "/images/(.*)",
       "headers": [
         {
-          "key": "Cache-Control", 
+          "key": "Cache-Control",
           "value": "public, max-age=86400"
         }
       ]
