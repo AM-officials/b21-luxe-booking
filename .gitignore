@@ -99,6 +99,10 @@ public/images/**/*.gif
 public/images/**/*.webp
 public/images/**/*.avif
 
+# Allow committing selected image folders
+!public/images/locations/**
+!public/images/services/**
+
 # But allow hero images specifically
 !public/images/DSC*.jpg
 !public/images/hero/*.jpg
