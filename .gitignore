@@ -103,11 +103,12 @@ public/images/**/*.avif
 !public/images/locations/**
 !public/images/services/**
 
-# But allow hero images specifically
+# But allow hero images specifically and banner images
 !public/images/DSC*.jpg
 !public/images/hero/*.jpg
 !public/images/hero/*.jpeg
 !public/images/hero/*.png
+!public/images/pop-up-banner.jpg
 
 # Key files and certificates
 *.key

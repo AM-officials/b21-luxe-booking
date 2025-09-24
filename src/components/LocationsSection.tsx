@@ -1,6 +1,10 @@
 import React from 'react';
 import { useWhatsappConfig } from '@/lib/whatsapp';
 import { Instagram } from 'lucide-react';
+import b21Img from '/public/images/locations/b21.jpg';
+import b21HairBeautySpaImg from '/public/images/locations/b21_hair_beauty_spa.png';
+import b21SalonImg from '/public/images/locations/b21_salon.jpg';
+import b21LadiesSalonImg from '/public/images/locations/b21_ladies_salon.jpg';
 
 type Franchise = {
   name: string;
@@ -21,7 +25,7 @@ const locations: Franchise[] = [
     locationUrl: 'https://share.google/QOWqE1CFrYfvC28co',
     address: 'Opposite BMC Bhawani Mall Exitgate, Saheed Nagar, Bhubaneswar, Odisha 751007',
     hours: '10:30 AM – 9:00 PM',
-    image: '/images/locations/b21.jpg',
+    image: b21Img,
   },
   {
     name: 'B21 Hair Beauty Spa',
@@ -30,7 +34,7 @@ const locations: Franchise[] = [
     locationUrl: 'https://share.google/te5Fdz3Uftt5dW4lK',
     address: 'Located in: Subham Market Complex\nIndustrial Area, Kharvela Nagar, Bhubaneswar, Odisha 751001',
     hours: '10:30 AM – 9:00 PM',
-    image: '/images/locations/b21_hair_beauty_spa.png',
+    image: b21HairBeautySpaImg,
   },
   {
     name: 'B21 Salon',
@@ -39,7 +43,7 @@ const locations: Franchise[] = [
     locationUrl: 'https://share.google/vbTRtK4jLdRkBZoNd',
     address: '4762 Biju, Plot no - 369, Biju Pattnaik College Rd, Jayadev Vihar, Bhubaneswar, Odisha 751015',
     hours: '10:30 AM – 9:00 PM',
-    image: '/images/locations/b21_salon.jpg',
+    image: b21SalonImg,
   },
   {
     name: 'B21 Ladies Salon',
@@ -48,7 +52,7 @@ const locations: Franchise[] = [
     locationUrl: 'https://share.google/vN2l0DjDiW2abnolU',
     address: 'Plot No 1232/2802/4027, Bypass Chapulia Road, Bhadrak, Odisha 756101',
     hours: '10:30 AM – 9:00 PM',
-    image: '/images/locations/b21_ladies_salon.jpg',
+    image: b21LadiesSalonImg,
   },
 ];
 

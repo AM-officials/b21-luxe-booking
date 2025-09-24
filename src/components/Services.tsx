@@ -1,13 +1,17 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useWhatsappConfig, buildWhatsAppUrl } from '@/lib/whatsapp';
+import bridalImg from '/public/images/services/bridal.jpg';
+import botoxImg from '/public/images/services/botox.jpeg';
+import straighteningImg from '/public/images/services/straightning.jpeg';
+import haircolorImg from '/public/images/services/haircolor.jpeg';
 
 const Services = () => {
   const services = [
     {
       title: 'Bridal',
       description: 'Premium bridal looks by our experts tailored to your special day.',
-      image: '/images/services/bridal.jpg',
+      image: bridalImg,
       price: '₹5,999',
       priceSuffix: 'onwards',
       whatsappMessage: 'Hi B21! I\'m interested in Bridal services.'
@@ -15,7 +19,7 @@ const Services = () => {
     {
       title: 'Botox',
       description: 'Revitalize your hair with our professional Botox hair treatment.',
-      image: '/images/services/botox.jpeg',
+      image: botoxImg,
       price: '₹3,999',
       priceSuffix: 'onwards',
       whatsappMessage: 'Hi B21! I want to know more about Hair Botox.'
@@ -23,7 +27,7 @@ const Services = () => {
     {
       title: 'Straightening',
       description: 'Get smooth, sleek hair with our advanced straightening services.',
-      image: '/images/services/straightning.jpeg',
+      image: straighteningImg,
       price: '₹3,777',
       priceSuffix: 'onwards',
       whatsappMessage: 'Hi B21! I\'m interested in Hair Straightening.'
@@ -31,7 +35,7 @@ const Services = () => {
     {
       title: 'Hair Colour',
       description: 'Express your style with vibrant shades and expert coloring.',
-      image: '/images/services/haircolor.jpeg',
+      image: haircolorImg,
       price: '₹300',
       priceSuffix: 'per streak',
       whatsappMessage: 'Hi B21! I want to enquire about Hair Colouring.'

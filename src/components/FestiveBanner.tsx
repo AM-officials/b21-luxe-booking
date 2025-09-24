@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { useWhatsappConfig } from '@/lib/whatsapp';
+import bannerImg from '/public/images/pop-up-banner.jpg';
 
-// Use an existing image from public/images; place new festive banners under /public/images/hero or /public/images/banners
-const bannerImgUrl = '/images/hero/DSC05036.jpg';
+// Use relative import for better deployment compatibility
+const bannerImgUrl = bannerImg;
 
 const FestiveBanner = () => {
   const { url: whatsappUrl } = useWhatsappConfig("Hi B21! I'm interested in your Festive Glow offers.");
