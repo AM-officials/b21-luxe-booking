@@ -71,6 +71,13 @@ const Services = () => {
                 <img
                   src={service.image}
                   alt={service.title}
+                  loading="lazy"
+                  decoding="async"
+                  onError={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    if (el.src.endsWith('/placeholder.svg')) return;
+                    el.src = '/placeholder.svg';
+                  }}
                   className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>

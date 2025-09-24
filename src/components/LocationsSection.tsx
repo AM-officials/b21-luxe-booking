@@ -88,7 +88,18 @@ export default function LocationsSection(){
                 {/* 3:2 image */}
                 <div className="relative w-full" style={{ aspectRatio: '3 / 2' }}>
                   {l.image ? (
-                    <img src={l.image} alt={l.name} className="absolute inset-0 w-full h-full object-cover" />
+                    <img
+                      src={l.image}
+                      alt={l.name}
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e)=>{
+                        const el = e.currentTarget as HTMLImageElement;
+                        if (el.src.endsWith('/placeholder.svg')) return;
+                        el.src = '/placeholder.svg';
+                      }}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
                   ) : (
                     <div className="absolute inset-0 bg-neutral-200 flex items-center justify-center text-neutral-500 text-xs">Image</div>
                   )}
