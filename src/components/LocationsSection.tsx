@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import FranchiseForm from './FranchiseForm';
+import React from 'react';
 import { useWhatsappConfig } from '@/lib/whatsapp';
 import { Instagram } from 'lucide-react';
 
@@ -11,7 +9,7 @@ type Franchise = {
   locationUrl: string;
   address: string;
   hours: string;
-  image?: string; // placeholder to be filled later
+  image?: string; // now using actual images
   note?: string;
 };
 
@@ -22,7 +20,8 @@ const locations: Franchise[] = [
     number: '80930 81930',
     locationUrl: 'https://share.google/QOWqE1CFrYfvC28co',
     address: 'Opposite BMC Bhawani Mall Exitgate, Saheed Nagar, Bhubaneswar, Odisha 751007',
-    hours: 'Opens 10:30 am Sun',
+    hours: '10:30 AM – 9:00 PM',
+    image: '/images/locations/b21.jpg',
   },
   {
     name: 'B21 Hair Beauty Spa',
@@ -30,7 +29,8 @@ const locations: Franchise[] = [
     number: '90900 34567',
     locationUrl: 'https://share.google/te5Fdz3Uftt5dW4lK',
     address: 'Located in: Subham Market Complex\nIndustrial Area, Kharvela Nagar, Bhubaneswar, Odisha 751001',
-    hours: 'Opens 10:30 am Sun',
+    hours: '10:30 AM – 9:00 PM',
+    image: '/images/locations/b21_hair_beauty_spa.png',
   },
   {
     name: 'B21 Salon',
@@ -38,7 +38,8 @@ const locations: Franchise[] = [
     number: '081178 40978',
     locationUrl: 'https://share.google/vbTRtK4jLdRkBZoNd',
     address: '4762 Biju, Plot no - 369, Biju Pattnaik College Rd, Jayadev Vihar, Bhubaneswar, Odisha 751015',
-    hours: 'Opens 10:30 am Sun',
+    hours: '10:30 AM – 9:00 PM',
+    image: '/images/locations/b21_salon.jpg',
   },
   {
     name: 'B21 Ladies Salon',
@@ -46,12 +47,12 @@ const locations: Franchise[] = [
     number: '90904 49700',
     locationUrl: 'https://share.google/vN2l0DjDiW2abnolU',
     address: 'Plot No 1232/2802/4027, Bypass Chapulia Road, Bhadrak, Odisha 756101',
-    hours: 'Opens 10:30 am Sun',
+    hours: '10:30 AM – 9:00 PM',
+    image: '/images/locations/b21_ladies_salon.jpg',
   },
 ];
 
 export default function LocationsSection(){
-  const [open,setOpen]=useState(false);
   const { url: waUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.");
   return (
     <section id="locations" className="py-20 sm:py-24 bg-[#f6f7ed]">
@@ -61,15 +62,18 @@ export default function LocationsSection(){
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
               <h3 className="font-heading text-xl tracking-wide mb-4">HOURS</h3>
-              <ul className="space-y-2 text-sm font-medium">
-                <li className="flex justify-between"><span>Monday - Friday</span><span>8:00AM - 7:00PM</span></li>
-                <li className="flex justify-between"><span>Saturday</span><span>8:00AM - 5:00PM</span></li>
-                <li className="flex justify-between"><span>Sunday</span><span>8:00AM - 3:00PM</span></li>
-              </ul>
+              <div className="space-y-2 text-sm font-medium">
+                <div className="flex justify-between"><span>Monday – Sunday</span><span>10:30 AM – 9:00 PM</span></div>
+                <div className="text-xs text-neutral-600">Same timing for all locations</div>
+              </div>
             </div>
             <div>
               <h3 className="font-heading text-xl tracking-wide mb-4">LOCATION</h3>
-              <p className="text-sm leading-relaxed">Call/WhatsApp for bookings<br/>Opens 10:30AM Daily</p>
+              <p className="text-sm leading-relaxed">Call/WhatsApp for bookings<br/>Open daily 10:30 AM – 9:00 PM</p>
+              <div className="mt-4 text-xs text-neutral-700 space-y-1">
+                <div><span className="font-semibold">B21:</span> Opposite BMC Bhawani Mall Exitgate, Saheed Nagar, Bhubaneswar, Odisha 751007</div>
+                <div><span className="font-semibold">B21 Hair Beauty Spa:</span> Subham Market Complex, Industrial Area, Kharvela Nagar, Bhubaneswar, Odisha 751001</div>
+              </div>
               <a href={waUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block px-6 py-3 rounded-md bg-black text-white text-xs tracking-widest hover:bg-neutral-800">Book an appointment</a>
             </div>
           </div>
@@ -81,9 +85,13 @@ export default function LocationsSection(){
           <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-5 min-w-max sm:min-w-0">
             {locations.map((l) => (
               <div key={l.name} className="flex-shrink-0 w-72 sm:w-auto p-0 rounded-3xl bg-white shadow-sm border border-black/5 hover:shadow-lg transition overflow-hidden">
-                {/* Image placeholder */}
-                <div className="h-36 bg-neutral-200 flex items-center justify-center text-neutral-500 text-xs">
-                  Image placeholder
+                {/* 3:2 image */}
+                <div className="relative w-full" style={{ aspectRatio: '3 / 2' }}>
+                  {l.image ? (
+                    <img src={l.image} alt={l.name} className="absolute inset-0 w-full h-full object-cover" />
+                  ) : (
+                    <div className="absolute inset-0 bg-neutral-200 flex items-center justify-center text-neutral-500 text-xs">Image</div>
+                  )}
                 </div>
                 <div className="p-5">
                   <div className="flex items-center justify-between gap-3 mb-1">
@@ -104,26 +112,15 @@ export default function LocationsSection(){
           </div>
         </div>
 
-        {/* Franchise CTA */}
+        {/* Franchise CTA -> Redirect to WhatsApp (hardcoded 80930-81930) */}
         <div className="mt-16 max-w-4xl mx-auto text-center bg-white/80 backdrop-blur rounded-3xl p-10 border border-black/5 shadow-sm">
           <h3 className="font-heading text-2xl sm:text-3xl font-bold mb-4">Franchise Opportunities</h3>
-            <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-2xl mx-auto mb-6">Grow with us as we expand. If you share our passion for elevated beauty experiences, register your interest and our team will connect with you.</p>
-            <button onClick={()=>setOpen(true)} className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-black text-white text-xs tracking-widest hover:bg-neutral-800">I'M INTERESTED</button>
+          <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-2xl mx-auto mb-6">Grow with us as we expand. For franchisee enquiries, reach out to us directly on WhatsApp.</p>
+          <a href={`https://wa.me/918093081930?text=${encodeURIComponent('Hi, I want to enquire about B21 franchise.')}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-black text-white text-xs tracking-widest hover:bg-neutral-800">Franchisee Enquiry on WhatsApp</a>
         </div>
       </div>
 
-      {/* Franchise Modal */}
-      <AnimatePresence>
-        {open && (
-          <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={()=>setOpen(false)}>
-            <motion.div initial={{y:40,opacity:0}} animate={{y:0,opacity:1}} exit={{y:40,opacity:0}} className="relative max-w-2xl w-full bg-background rounded-3xl p-6 sm:p-8" onClick={(e)=>e.stopPropagation()}>
-              <button onClick={()=>setOpen(false)} className="absolute top-4 right-4 text-[10px] tracking-widest text-neutral-500 hover:text-neutral-900">CLOSE</button>
-              <h3 className="text-2xl font-heading font-bold mb-6">Franchise Interest Form</h3>
-              <FranchiseForm onClose={()=>setOpen(false)} />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Franchise Modal removed per new flow: WhatsApp redirect */}
     </section>
   );
 }

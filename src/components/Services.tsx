@@ -1,32 +1,40 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import hairStylingImage from '@/assets/hair-styling.jpg';
-import skinCareImage from '@/assets/skin-care.jpg';
-import nailArtImage from '@/assets/nail-art.jpg';
 import { useWhatsappConfig, buildWhatsAppUrl } from '@/lib/whatsapp';
 
 const Services = () => {
   const services = [
     {
-      title: 'Hair Styling',
-      description: 'Transform your look with our expert hair styling services, from cuts to colors.',
-      image: hairStylingImage,
-      price: '₹2,999',
-      whatsappMessage: 'Hi B21! I\'m interested in your Hair Styling services.'
+      title: 'Bridal',
+      description: 'Premium bridal looks by our experts tailored to your special day.',
+      image: '/images/services/bridal.jpg',
+      price: '₹5,999',
+      priceSuffix: 'onwards',
+      whatsappMessage: 'Hi B21! I\'m interested in Bridal services.'
     },
     {
-      title: 'Skin Care',
-      description: 'Rejuvenate your skin with our premium facial treatments and skincare routines.',
-      image: skinCareImage,
+      title: 'Botox',
+      description: 'Revitalize your hair with our professional Botox hair treatment.',
+      image: '/images/services/botox.jpeg',
       price: '₹3,999',
-      whatsappMessage: 'Hi B21! I\'d like to book a Skin Care treatment.'
+      priceSuffix: 'onwards',
+      whatsappMessage: 'Hi B21! I want to know more about Hair Botox.'
     },
     {
-      title: 'Nail Art',
-      description: 'Express yourself with our creative nail art designs and manicure services.',
-      image: nailArtImage,
-      price: '₹1,999',
-      whatsappMessage: 'Hi B21! I\'m interested in your Nail Art services.'
+      title: 'Straightening',
+      description: 'Get smooth, sleek hair with our advanced straightening services.',
+      image: '/images/services/straightning.jpeg',
+      price: '₹3,777',
+      priceSuffix: 'onwards',
+      whatsappMessage: 'Hi B21! I\'m interested in Hair Straightening.'
+    },
+    {
+      title: 'Hair Colour',
+      description: 'Express your style with vibrant shades and expert coloring.',
+      image: '/images/services/haircolor.jpeg',
+      price: '₹300',
+      priceSuffix: 'per streak',
+      whatsappMessage: 'Hi B21! I want to enquire about Hair Colouring.'
     }
   ];
 
@@ -48,7 +56,8 @@ const Services = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Horizontal carousel-like scroll on mobile, grid on larger screens */}
+        <div className="flex gap-6 overflow-x-auto pb-2 -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 md:overflow-visible md:mx-0 md:px-0">
           {services.map((service, index) => (
             <motion.div
               key={service.title}
@@ -56,7 +65,7 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
-              className="card-luxury card-hover group cursor-pointer"
+              className="card-luxury card-hover group cursor-pointer flex-shrink-0 w-72 md:w-auto relative"
             >
               <div className="overflow-hidden rounded-t-2xl">
                 <img
@@ -66,28 +75,32 @@ const Services = () => {
                 />
               </div>
               
-              <div className="p-6">
+              <div className="p-6 pb-8">
                 <h3 className="text-heading-md mb-3">{service.title}</h3>
                 <p className="text-muted-foreground mb-4 leading-relaxed">
                   {service.description}
                 </p>
                 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-sm text-muted-foreground">Starts from</span>
-                    <div className="text-2xl font-bold text-accent">{service.price}</div>
+                <div className="flex items-baseline justify-start">
+                  <div className="flex items-end gap-2">
+                    <div className="text-3xl font-extrabold text-accent">{service.price}</div>
+                    {service.priceSuffix && (
+                      <span className="text-xs text-muted-foreground mb-1">{service.priceSuffix}</span>
+                    )}
                   </div>
-                  
-                  <a
-                    href={buildWhatsAppUrl(whatsappNumber, service.whatsappMessage)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-outline-luxury flex items-center space-x-2 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300 text-sm md:text-base px-3 py-2"
-                  >
-                    <span>Book Now</span>
-                    <ArrowRight size={16} />
-                  </a>
                 </div>
+
+                {/* Floating circular CTA */}
+                <a
+                  href={buildWhatsAppUrl(whatsappNumber, service.whatsappMessage)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute -bottom-6 right-5 w-20 h-20 rounded-full bg-accent text-black shadow-xl flex flex-col items-center justify-center gap-0.5 hover:brightness-95 transition"
+                >
+                  <span className="text-[10px] font-bold tracking-widest">BOOK</span>
+                  <span className="text-[10px] font-bold tracking-widest">NOW</span>
+                  <ArrowRight size={14} className="mt-0.5" />
+                </a>
               </div>
             </motion.div>
           ))}

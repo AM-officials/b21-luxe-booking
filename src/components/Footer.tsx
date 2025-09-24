@@ -71,30 +71,46 @@ const Footer = () => {
             viewport={{ once: true }}
           >
             <h4 className="font-semibold text-lg mb-6">Contact Us</h4>
-            <div className="space-y-4">
+            <div className="space-y-5">
+              {/* Address 1: B21 */}
               <div className="flex items-start space-x-3">
                 <MapPin size={18} className="text-accent mt-1 flex-shrink-0" />
                 <div className="text-white/80">
+                  <p className="font-medium">B21</p>
                   <p>Opposite BMC Bhawani Mall Exitgate, Saheed Nagar</p>
                   <p>Bhubaneswar, Odisha 751007</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <Phone size={18} className="text-accent flex-shrink-0" />
-                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-accent transition-colors">80930 81930</a>
+
+              {/* Address 2: B21 Hair Beauty Spa */}
+              <div className="flex items-start space-x-3">
+                <MapPin size={18} className="text-accent mt-1 flex-shrink-0" />
+                <div className="text-white/80">
+                  <p className="font-medium">B21 Hair Beauty Spa</p>
+                  <p>Located in: Subham Market Complex</p>
+                  <p>Industrial Area, Kharvela Nagar, Bhubaneswar, Odisha 751001</p>
+                </div>
               </div>
+
+              {/* Phone numbers */}
+              <div className="flex items-start space-x-3">
+                <Phone size={18} className="text-accent flex-shrink-0 mt-1" />
+                <div className="space-y-1">
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="block text-white/80 hover:text-accent transition-colors">80930-81930</a>
+                  <a href="tel:+919090034567" className="block text-white/80 hover:text-accent transition-colors">90900 34567</a>
+                </div>
+              </div>
+
+              {/* Email */}
               <div className="flex items-center space-x-3">
                 <Mail size={18} className="text-accent flex-shrink-0" />
-                <a href="mailto:hello@b21salon.com" className="text-white/80 hover:text-accent transition-colors">
-                  hello@b21salon.com
+                <a href="mailto:contact@b21india.com" className="text-white/80 hover:text-accent transition-colors">
+                  contact@b21india.com
                 </a>
               </div>
-              <div>
-                <a href="https://share.google/QOWqE1CFrYfvC28co" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-accent transition-colors">
-                  <MapPin size={16} /> Get Directions
-                </a>
-              </div>
-              <div className="text-xs text-white/60">Opens 10:30 am Sun</div>
+
+              {/* Directions note and hours */}
+              <div className="text-xs text-white/60">Open daily 10:30 AM – 9:00 PM</div>
             </div>
           </motion.div>
         </div>
@@ -107,9 +123,7 @@ const Footer = () => {
           viewport={{ once: true }}
           className="border-t border-white/10 mt-12 pt-8 text-center"
         >
-          <p className="text-white/60">
-            © 2024 B21 Luxury Salon. All rights reserved. | Designed with ❤️ for beauty lovers
-          </p>
+          <p className="text-white/60">Copyright © 2025 B21 Salon All rights reserved.</p>
         </motion.div>
       </div>
     </footer>

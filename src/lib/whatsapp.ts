@@ -2,10 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchPopupConfig } from '@/lib/supabaseApi';
 
 export function buildWhatsAppUrl(number: string, message: string) {
-  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+  const digits = (number || '').replace(/\D/g, '');
+  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
-const DEFAULT_NUMBER = '919876543210';
+// Default to B21 main WhatsApp number: +91 80930 81930
+const DEFAULT_NUMBER = '918093081930';
 const DEFAULT_MESSAGE = "Hi B21! I'm interested in your 20% off last-minute booking offer.";
 
 export function useWhatsappConfig(messageOverride?: string) {

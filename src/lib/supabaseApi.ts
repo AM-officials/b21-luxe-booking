@@ -103,7 +103,7 @@ export async function savePopupConfig(cfg: Partial<PopupConfig>): Promise<PopupC
     subtitle: cfg.subtitle ?? '20% OFF Last-Minute Bookings',
     validity_text: cfg.validity_text ?? 'Valid for today only',
     body_text: cfg.body_text ?? 'Book your appointment today and enjoy 20% off our premium services.',
-    whatsapp_number: cfg.whatsapp_number ?? '919876543210',
+  whatsapp_number: cfg.whatsapp_number ?? '918093081930',
   whatsapp_message: cfg.whatsapp_message ?? "Hi B21! I'm interested in your 20% off last-minute booking offer.",
   // @ts-ignore optional column depending on DB migration
   banner_image: (cfg as any).banner_image ?? '/Pop-up banner offer.webp'

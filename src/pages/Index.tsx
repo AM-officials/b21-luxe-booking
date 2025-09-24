@@ -9,6 +9,7 @@ import LocationsSection from '@/components/LocationsSection';
 import SectionSeparator from '@/components/SectionSeparator';
 import FestiveBanner from '@/components/FestiveBanner';
 import VideoGallery from '@/components/VideoGallery';
+import JourneySection from '@/components/JourneySection';
 import Testimonials from '@/components/Testimonials';
 import InstagramFeed from '@/components/InstagramFeed';
 import Footer from '@/components/Footer';
@@ -68,6 +69,7 @@ const Index = () => {
   <SectionSeparator style="curve" />
   <FestiveBanner />
   <VideoGallery />
+  <JourneySection />
   {/* <ReviewsSection /> */}
   <SectionSeparator style="angle" />
   <Testimonials />

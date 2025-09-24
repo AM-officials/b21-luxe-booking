@@ -60,7 +60,7 @@ const BookingPopup = () => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="relative bg-background rounded-2xl shadow-luxury w-full max-w-sm sm:max-w-md overflow-hidden mx-2 outline-none focus:outline-none"
+              className="relative bg-background rounded-2xl shadow-luxury w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl max-h-[90vh] overflow-auto mx-2 outline-none focus:outline-none"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Background removed to prevent dual banner conflicts */}
@@ -75,7 +75,8 @@ const BookingPopup = () => {
             {/* Header with Banner Image */}
             <div className="relative overflow-hidden">
               {/* Banner Image Section */}
-              <div className="h-32 bg-gradient-gold relative overflow-hidden">
+              {/* 4:5 on mobile, 16:9 on desktop for better fit */}
+              <div className="relative overflow-hidden bg-gradient-gold aspect-[4/5] md:aspect-[16/9]">
                 <img
                   src={(cfg as any)?.banner_image || (bannerFallback as unknown as string)}
                   alt="Special Offer Banner"
