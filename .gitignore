@@ -102,6 +102,7 @@ public/images/**/*.avif
 # Allow committing selected image folders
 !public/images/locations/**
 !public/images/services/**
+!public/images/optimized/**
 
 # But allow hero images specifically and banner images
 !public/images/DSC*.jpg
