@@ -15,7 +15,7 @@ const menServices: PriceItem[] = [
   { service: 'Hair Treatment', price: 'Rs.950' },
   { service: 'Straightening / Smoothening', price: 'Rs.2900' },
   { service: 'Keratin', price: 'Rs.1900' },
-  { service: 'Nano Plastia Hair Treatment', price: 'Rs.3777' },
+  { service: 'Nano Plastia Hair Treatment', price: 'Rs.3999' },
   { service: 'Groom Makeup', price: 'Rs.2100' },
   { service: 'Groom Package', price: 'Rs.5000' },
 ];
@@ -33,7 +33,7 @@ const womenServices: PriceItem[] = [
   { service: 'Straightening / Smoothening', price: 'Rs.3777' },
   { service: 'Keratin', price: 'Rs.3777' },
   { service: 'Hair Botox', price: 'Rs.3999' },
-  { service: 'Nano Plastia Hair Treatment', price: 'Rs.3777' },
+  { service: 'Nano Plastia Hair Treatment', price: 'Rs.3999' },
   { service: 'Waxing', price: 'Rs.1250' },
   { service: 'Makeup', price: 'Rs.150' },
   { service: 'Bridal Makeup', price: 'Rs.9000' },

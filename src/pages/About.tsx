@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import LocationsSection from '@/components/LocationsSection';
+import JourneySection from '@/components/JourneySection';
 
 export default function AboutPage(){
   return (
@@ -13,6 +14,7 @@ export default function AboutPage(){
           <p className="text-lg leading-relaxed text-muted-foreground mb-6">We blend artistry with elevated care; every service is a crafted moment of luxury designed around you. Our talented collective pursues continual education and innovation to bring global techniques to your local chair.</p>
           <p className="text-muted-foreground leading-relaxed">From hair sculpting and corrective color to advanced skin therapies and signature nail finishes, our studios are immersive spaces that celebrate personal expression. We are growing thoughtfully across cities while preserving an intimate, high-touch experience.</p>
         </section>
+        <JourneySection />
         <LocationsSection />
       </main>
       <Footer />
