@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import logoBlack from '../../B21 logo White.png';
+import logoBlack from '../../B21 logo Black.png';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWhatsappConfig } from '@/lib/whatsapp';
 

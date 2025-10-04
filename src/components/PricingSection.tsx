@@ -50,46 +50,33 @@ const skinServices: PriceItem[] = [
   { service: 'Body Polishing', price: 'Rs.2700' },
 ];
 
-// On mobile keep overflow hidden to avoid horizontal scroll from decorative image
-const cardBase = 'relative rounded-[36px] sm:rounded-[40px] overflow-hidden sm:overflow-visible bg-[#eef0e4] shadow-lg p-6 sm:p-8 flex flex-col justify-between cursor-pointer min-h-[230px] sm:min-h-[260px] max-w-full';
+// Card layout: mobile shows image inside, desktop shows image on side
+const cardBase = 'relative rounded-[36px] sm:rounded-[40px] overflow-hidden bg-[#eef0e4] shadow-lg p-4 sm:p-6 md:p-8 flex flex-col cursor-pointer min-h-[230px] sm:min-h-[260px] w-full';
 
 function PricingCard({ title, img, items, open, onToggle }: { title: string; img: string; items: PriceItem[]; open: boolean; onToggle: ()=>void; }) {
   return (
     <motion.div layout onClick={onToggle} className={cardBase + ' group'} initial={false}>
       {/* Header Row */}
-      <div className="flex items-start justify-between sm:pr-44 md:pr-48">
-        <h3 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-neutral-900 drop-shadow-md leading-none">
+      <div className="flex items-start justify-between mb-4">
+        <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-neutral-900 drop-shadow-md leading-none">
           {title}
         </h3>
-        <div className="mt-1 sm:mt-2 px-4 sm:px-5 py-1.5 sm:py-2 border-2 border-black rounded-full text-[11px] sm:text-sm font-semibold bg-white shadow group-hover:shadow-md transition whitespace-nowrap">SHOP NOW</div>
+        <div className="mt-1 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 border border-black rounded-full text-[10px] sm:text-xs md:text-sm font-semibold bg-white shadow group-hover:shadow-md transition whitespace-nowrap flex-shrink-0">BOOK NOW</div>
       </div>
 
-      {/* Mobile Image (full width inside flow, ignore card padding) */}
-      <div className="sm:hidden mt-4 rounded-2xl overflow-hidden -mx-2 px-2">
+      {/* Image - visible on both mobile and desktop, larger size */}
+      <div className="w-full rounded-2xl overflow-hidden mb-4">
         <img
           src={img}
           alt={title}
           loading="lazy"
-          className="w-full h-56 object-cover object-center"
+          className="w-full h-auto object-cover object-center scale-105"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             console.error(`Failed to load image: ${target.src}`);
           }}
         />
       </div>
-
-      {/* Desktop / larger screens decorative image (slightly larger to cover card) */}
-      <img
-        src={img}
-        alt={title}
-        loading="lazy"
-        decoding="async"
-        className="hidden sm:block absolute right-2 md:right-4 bottom-0 h-[300px] md:h-[360px] w-auto object-contain pointer-events-none select-none drop-shadow-xl translate-y-8 group-hover:translate-y-4 transition-transform duration-500"
-        onError={(e) => {
-          const target = e.target as HTMLImageElement;
-          console.error(`Failed to load image: ${target.src}`);
-        }}
-      />
 
       <AnimatePresence initial={false}>
         {open && (
@@ -99,7 +86,7 @@ function PricingCard({ title, img, items, open, onToggle }: { title: string; img
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.4 }}
-            className="mt-6 sm:mt-8 bg-white/70 backdrop-blur rounded-3xl border border-black/5 p-5 sm:p-6 -mx-1 sm:-mx-2"
+            className="mt-6 sm:mt-8 bg-white/70 backdrop-blur rounded-3xl border border-black/5 p-4 sm:p-5 md:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Primary services list */}
@@ -129,7 +116,13 @@ function PricingCard({ title, img, items, open, onToggle }: { title: string; img
               ))}
             </div>
             <div className="mt-5 sm:mt-6 text-center">
-              <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-black text-white text-[10px] sm:text-xs tracking-widest hover:bg-neutral-800 transition">
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggle();
+                }}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-black text-white text-[10px] sm:text-xs tracking-widest hover:bg-neutral-800 transition"
+              >
                 Close
               </button>
             </div>

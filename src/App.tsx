@@ -15,7 +15,6 @@ import BlogPost from "./pages/BlogPost";
 import AdminPage from "./pages/Admin.tsx";
 import LoginPage from "./pages/Login.tsx";
 import { AuthProvider } from "../context/AuthContext";
-import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp';
 
 const queryClient = new QueryClient();
 
@@ -27,7 +26,6 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <LoadingScreen />
-          <FloatingWhatsApp />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/services" element={<ServicesPage />} />

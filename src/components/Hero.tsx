@@ -6,10 +6,10 @@ import { useWhatsappConfig } from '@/lib/whatsapp';
 const Hero = () => {
   const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.", 'hero-cta');
 
-  // List of hero images located under public/images/hero
+  // List of hero images located under public/images/hero - DSC05018 as primary hero
   const heroImages = useMemo(() => ([
-    // Prefer optimized images if present
-    '/images/optimized/DSC05018.jpg',
+    // Use DSC05018 as the main hero image (from attachment)
+    '/images/DSC05018.jpg',
     '/images/optimized/DSC05021.jpg',
     '/images/optimized/DSC05028.jpg',
     '/images/optimized/DSC05036.jpg',
