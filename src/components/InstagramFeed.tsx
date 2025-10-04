@@ -1,22 +1,8 @@
 import { motion } from 'framer-motion';
 import { Instagram, ExternalLink } from 'lucide-react';
-import hairStylingImage from '@/assets/hair-styling.jpg';
-import skinCareImage from '@/assets/skin-care.jpg';
-import nailArtImage from '@/assets/nail-art.jpg';
 
 const InstagramFeed = () => {
-  // Placeholder Instagram posts - replace with actual Instagram API data
-  const instagramPosts = [
-    { id: 1, image: hairStylingImage, caption: 'Gorgeous balayage transformation ✨' },
-    { id: 2, image: skinCareImage, caption: 'Glowing skin is always in 💫' },
-    { id: 3, image: nailArtImage, caption: 'Nail art perfection 💅' },
-    { id: 4, image: hairStylingImage, caption: 'Hair goals achieved! 🔥' },
-    { id: 5, image: skinCareImage, caption: 'Self-care Sunday vibes ✨' },
-    { id: 6, image: nailArtImage, caption: 'Intricate designs that wow! 🎨' },
-    { id: 7, image: hairStylingImage, caption: 'Color transformation magic ✨' },
-    { id: 8, image: skinCareImage, caption: 'Radiant skin journey 🌟' }
-  ];
-
+  /* Temporarily using Elfsight widget - original Instagram posts only */
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -37,62 +23,8 @@ const InstagramFeed = () => {
           </p>
         </motion.div>
 
-        {/* Instagram Grid: single-row carousel on mobile, two rows on desktop */}
-        <div className="mb-8">
-          {/* Mobile: horizontal scroll, single row */}
-          <div className="md:hidden -mx-4 px-4 overflow-x-auto">
-            <div className="flex gap-4">
-              {instagramPosts.map((post, index) => (
-                <motion.div
-                  key={post.id}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="relative group cursor-pointer aspect-square rounded-lg overflow-hidden w-40 flex-shrink-0"
-                >
-                  <img
-                    src={post.image}
-                    alt={post.caption}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="text-white text-center p-4">
-                      <Instagram size={24} className="mx-auto mb-2" />
-                      <p className="text-sm font-medium">{post.caption}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Desktop: two-row grid */}
-          <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-4">
-            {instagramPosts.map((post, index) => (
-              <motion.div
-                key={post.id}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="relative group cursor-pointer aspect-square rounded-lg overflow-hidden"
-              >
-                <img
-                  src={post.image}
-                  alt={post.caption}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="text-white text-center p-4">
-                    <Instagram size={24} className="mx-auto mb-2" />
-                    <p className="text-sm font-medium">{post.caption}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        {/* Elfsight Instagram Feed Widget */}
+        <div className="elfsight-app-978604bd-05b6-475f-ab08-7a3c8d551d66" data-elfsight-app-lazy></div>
 
         {/* Follow Button */}
         <motion.div
@@ -100,7 +32,7 @@ const InstagramFeed = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
-          className="text-center"
+          className="text-center mt-8"
         >
           <a
             href="https://www.instagram.com/b21india/?hl=en"

@@ -32,13 +32,6 @@ export const videos: VideoItem[] = [
     poster: `${SUPABASE_STORAGE_URL}/posters/nanoplastia-poster.jpg`,
   },
   {
-    id: 'testimonial-1',
-    title: 'Client Testimonial',
-    teaser: `${SUPABASE_STORAGE_URL}/teasers/testimonial-1-teaser.mp4`,
-    full: `${SUPABASE_STORAGE_URL}/testimonial-1.mp4`,
-    poster: `${SUPABASE_STORAGE_URL}/posters/testimonial-1-poster.jpg`,
-  },
-  {
     id: 'testimonial-2',
     title: 'Client Experience',
     teaser: `${SUPABASE_STORAGE_URL}/teasers/testimonial-2-teaser.mp4`,

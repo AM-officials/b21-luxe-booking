@@ -16,8 +16,8 @@ const BookingPopup = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  // Centralized WhatsApp URL built from CMS config
-  const { url: whatsappUrl } = useWhatsappConfig();
+  // Centralized WhatsApp URL built from CMS config with source tracking
+  const { url: whatsappUrl } = useWhatsappConfig(undefined, 'offer-popup');
 
   useEffect(() => {
     // Start timer only after loading screen finished (appLoaded event)
@@ -74,9 +74,8 @@ const BookingPopup = () => {
 
             {/* Header with Banner Image */}
             <div className="relative overflow-hidden">
-              {/* Banner Image Section */}
-              {/* 4:5 on mobile, 16:9 on desktop for better fit */}
-              <div className="relative overflow-hidden bg-gradient-gold aspect-[4/5] md:aspect-[16/9]">
+              {/* Banner Image Section - consistent 4:5 aspect ratio on all devices */}
+              <div className="relative overflow-hidden bg-gradient-gold aspect-[4/5]">
                 <img
                   src={(cfg as any)?.banner_image || (bannerFallback as unknown as string)}
                   alt="Special Offer Banner"
@@ -127,7 +126,7 @@ const BookingPopup = () => {
                   className="btn-luxury w-full text-center block"
                   onClick={closePopup}
                 >
-                  Book Now & Save 20%
+                  {(cfg as any)?.action_button_text ?? 'Book Now & Save 20%'}
                 </a>
                 
                 <button

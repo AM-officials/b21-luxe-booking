@@ -4,7 +4,7 @@ import heroImage from '@/assets/hero-salon.jpg';
 import { useWhatsappConfig } from '@/lib/whatsapp';
 
 const Hero = () => {
-  const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.");
+  const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.", 'hero-cta');
 
   // List of hero images located under public/images/hero
   const heroImages = useMemo(() => ([

@@ -105,8 +105,10 @@ export async function savePopupConfig(cfg: Partial<PopupConfig>): Promise<PopupC
     body_text: cfg.body_text ?? 'Book your appointment today and enjoy 20% off our premium services.',
   whatsapp_number: cfg.whatsapp_number ?? '918093081930',
   whatsapp_message: cfg.whatsapp_message ?? "Hi B21! I'm interested in your 20% off last-minute booking offer.",
-  // @ts-ignore optional column depending on DB migration
-  banner_image: (cfg as any).banner_image ?? '/Pop-up banner offer.webp'
+  // @ts-ignore optional columns depending on DB migration
+  banner_image: (cfg as any).banner_image ?? '/Pop-up banner offer.webp',
+  // @ts-ignore
+  action_button_text: (cfg as any).action_button_text ?? 'Book Now & Save 20%'
   };
   const { data, error } = await supabase
     .from('popup_config')
@@ -115,6 +117,46 @@ export async function savePopupConfig(cfg: Partial<PopupConfig>): Promise<PopupC
     .single();
   if (error) throw error;
   return data as PopupConfig;
+}
+
+// Festive Banner Config
+export async function fetchFestiveBannerConfig() {
+  try {
+    const { data, error, status } = await supabase
+      .from('festive_banner' as any)
+      .select('*')
+      .order('id', { ascending: true })
+      .limit(1)
+      .maybeSingle();
+    if (error) {
+      if (status === 404 || (error as any).code === '42P01') return null;
+      throw error;
+    }
+    return data ?? null;
+  } catch (e) {
+    console.warn('fetchFestiveBannerConfig failed, using defaults:', e);
+    return null;
+  }
+}
+
+export async function saveFestiveBannerConfig(cfg: any) {
+  const payload = {
+    id: 1,
+    enabled: cfg.enabled ?? true,
+    title: cfg.title ?? 'FESTIVE GLOW',
+    subtitle: cfg.subtitle ?? 'Celebrate the season with our exclusive festive beauty packages',
+    button_text: cfg.button_text ?? 'VIEW OFFERS',
+    banner_image: cfg.banner_image ?? '/Pop-up banner offer.webp',
+    whatsapp_message: cfg.whatsapp_message ?? "Hi B21! I'm interested in your Festive Glow offers."
+  };
+  const client: any = supabase;
+  const { data, error } = await client
+    .from('festive_banner')
+    .upsert(payload)
+    .select('*')
+    .single();
+  if (error) throw error;
+  return data;
 }
 
 // Franchise Leads

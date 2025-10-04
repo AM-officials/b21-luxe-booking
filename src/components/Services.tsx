@@ -103,7 +103,7 @@ const Services = () => {
 
                 {/* Floating circular CTA */}
                 <a
-                  href={buildWhatsAppUrl(whatsappNumber, service.whatsappMessage)}
+                  href={buildWhatsAppUrl(whatsappNumber, service.whatsappMessage, 'service-inquiry')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="absolute -bottom-6 right-5 w-20 h-20 rounded-full bg-accent text-black shadow-xl flex flex-col items-center justify-center gap-0.5 hover:brightness-95 transition"

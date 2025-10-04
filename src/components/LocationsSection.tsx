@@ -24,7 +24,7 @@ const locations: Franchise[] = [
     number: '80930 81930',
     locationUrl: 'https://share.google/QOWqE1CFrYfvC28co',
     address: 'Opposite BMC Bhawani Mall Exitgate, Saheed Nagar, Bhubaneswar, Odisha 751007',
-    hours: '10:30 AM – 9:00 PM',
+    hours: '10:30 AM – 8:30 PM',
     image: b21Img,
   },
   {
@@ -33,7 +33,7 @@ const locations: Franchise[] = [
     number: '90900 34567',
     locationUrl: 'https://share.google/te5Fdz3Uftt5dW4lK',
     address: 'Located in: Subham Market Complex\nIndustrial Area, Kharvela Nagar, Bhubaneswar, Odisha 751001',
-    hours: '10:30 AM – 9:00 PM',
+    hours: '10:30 AM – 8:30 PM',
     image: b21HairBeautySpaImg,
   },
   {
@@ -42,7 +42,7 @@ const locations: Franchise[] = [
     number: '081178 40978',
     locationUrl: 'https://share.google/vbTRtK4jLdRkBZoNd',
     address: '4762 Biju, Plot no - 369, Biju Pattnaik College Rd, Jayadev Vihar, Bhubaneswar, Odisha 751015',
-    hours: '10:30 AM – 9:00 PM',
+    hours: '10:30 AM – 8:30 PM',
     image: b21SalonImg,
   },
   {
@@ -51,13 +51,13 @@ const locations: Franchise[] = [
     number: '90904 49700',
     locationUrl: 'https://share.google/vN2l0DjDiW2abnolU',
     address: 'Plot No 1232/2802/4027, Bypass Chapulia Road, Bhadrak, Odisha 756101',
-    hours: '10:30 AM – 9:00 PM',
+    hours: '10:30 AM – 8:30 PM',
     image: b21LadiesSalonImg,
   },
 ];
 
 export default function LocationsSection(){
-  const { url: waUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.");
+  const { url: waUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.", 'locations-book');
   return (
     <section id="locations" className="py-20 sm:py-24 bg-[#f6f7ed]">
       <div className="container mx-auto px-4">
@@ -67,13 +67,13 @@ export default function LocationsSection(){
             <div>
               <h3 className="font-heading text-xl tracking-wide mb-4">HOURS</h3>
               <div className="space-y-2 text-sm font-medium">
-                <div className="flex justify-between"><span>Monday – Sunday</span><span>10:30 AM – 9:00 PM</span></div>
+                <div className="flex justify-between"><span>Monday – Sunday</span><span>10:30 AM – 8:30 PM</span></div>
                 <div className="text-xs text-neutral-600">Same timing for all locations</div>
               </div>
             </div>
             <div>
               <h3 className="font-heading text-xl tracking-wide mb-4">LOCATION</h3>
-              <p className="text-sm leading-relaxed">Call/WhatsApp for bookings<br/>Open daily 10:30 AM – 9:00 PM</p>
+              <p className="text-sm leading-relaxed">Call/WhatsApp for bookings<br/>Open daily 10:30 AM – 8:30 PM</p>
               <div className="mt-4 text-xs text-neutral-700 space-y-1">
                 <div><span className="font-semibold">B21:</span> Opposite BMC Bhawani Mall Exitgate, Saheed Nagar, Bhubaneswar, Odisha 751007</div>
                 <div><span className="font-semibold">B21 Hair Beauty Spa:</span> Subham Market Complex, Industrial Area, Kharvela Nagar, Bhubaneswar, Odisha 751001</div>

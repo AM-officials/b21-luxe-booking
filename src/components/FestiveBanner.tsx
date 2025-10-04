@@ -1,12 +1,28 @@
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import { useWhatsappConfig } from '@/lib/whatsapp';
-import bannerImg from '/public/images/pop-up-banner.jpg';
-
-// Use relative import for better deployment compatibility
-const bannerImgUrl = bannerImg;
+import { fetchFestiveBannerConfig } from '@/lib/supabaseApi';
 
 const FestiveBanner = () => {
-  const { url: whatsappUrl } = useWhatsappConfig("Hi B21! I'm interested in your Festive Glow offers.");
+  const { data: cfg } = useQuery({
+    queryKey: ['festive_banner'],
+    queryFn: fetchFestiveBannerConfig,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { url: whatsappUrl } = useWhatsappConfig(
+    (cfg as any)?.whatsapp_message ?? "Hi B21! I'm interested in your Festive Glow offers.",
+    'festive-banner'
+  );
+
+  // Don't render if disabled in CMS
+  if ((cfg as any)?.enabled === false) return null;
+
+  const bannerImgUrl = (cfg as any)?.banner_image ?? '/images/pop-up-banner.jpg';
+  const title = (cfg as any)?.title ?? 'FESTIVE GLOW';
+  const subtitle = (cfg as any)?.subtitle ?? 'Celebrate the season with our exclusive festive beauty packages';
+  const buttonText = (cfg as any)?.button_text ?? 'VIEW OFFERS';
 
   return (
     <section className="relative py-20 md:py-28 overflow-hidden" aria-labelledby="festive-heading">
@@ -38,7 +54,7 @@ const FestiveBanner = () => {
             className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-white mb-8 tracking-tight"
             style={{ textShadow: '0 4px 24px rgba(0,0,0,0.45)' }}
           >
-            FESTIVE GLOW
+            {title}
           </h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -47,7 +63,7 @@ const FestiveBanner = () => {
             viewport={{ once: true }}
             className="text-lg sm:text-xl md:text-2xl text-white/90 mb-10 max-w-3xl mx-auto font-medium"
           >
-            Celebrate the season with our exclusive festive beauty packages
+            {subtitle}
           </motion.p>
           <motion.a
             href={whatsappUrl}
@@ -61,7 +77,7 @@ const FestiveBanner = () => {
             whileTap={{ scale: 0.95 }}
             className="btn-dark inline-flex items-center text-base sm:text-lg px-10 sm:px-12 py-4 shadow-lg shadow-black/30"
           >
-            VIEW OFFERS
+            {buttonText}
           </motion.a>
         </motion.div>
       </div>

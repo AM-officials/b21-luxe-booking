@@ -13,7 +13,7 @@ const VideoGallery = () => {
     id: i + 1,
     thumbnail: v.poster,
     title: v.title,
-    stylist: 'B21 Studio',
+    stylist: 'B21 Salon',
     preview: v.teaser,
     full: v.full,
     whatsappMessage: `Hi B21! I'm interested in ${v.title}.`
@@ -183,7 +183,7 @@ const VideoGallery = () => {
 
                   {/* Floating CTA button on desktop only */}
                   <a
-                    href={buildWhatsAppUrl(whatsappNumber, selectedVideoData.whatsappMessage)}
+                    href={buildWhatsAppUrl(whatsappNumber, selectedVideoData.whatsappMessage, 'video-inquiry')}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e)=>e.stopPropagation()}
@@ -218,7 +218,7 @@ const VideoGallery = () => {
                 </div>
 
                 <a
-                  href={buildWhatsAppUrl(whatsappNumber, selectedVideoData.whatsappMessage)}
+                  href={buildWhatsAppUrl(whatsappNumber, selectedVideoData.whatsappMessage, 'video-inquiry')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full btn-luxury flex items-center justify-center"

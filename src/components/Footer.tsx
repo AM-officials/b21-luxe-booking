@@ -4,7 +4,7 @@ import { MapPin, Phone, Mail, Instagram } from 'lucide-react';
 import { useWhatsappConfig } from '@/lib/whatsapp';
 
 const Footer = () => {
-  const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to get in touch.");
+  const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to get in touch.", 'footer-contact');
 
   return (
     <footer className="bg-luxury-black text-white py-16">
@@ -92,12 +92,12 @@ const Footer = () => {
                 </div>
               </div>
 
-              {/* Phone numbers */}
+              {/* Phone numbers - both with tel: links for calling */}
               <div className="flex items-start space-x-3">
                 <Phone size={18} className="text-accent flex-shrink-0 mt-1" />
                 <div className="space-y-1">
-                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="block text-white/80 hover:text-accent transition-colors">80930-81930</a>
-                  <a href="tel:+919090034567" className="block text-white/80 hover:text-accent transition-colors">90900 34567</a>
+                  <a href="tel:+918093081930" className="block text-white/80 hover:text-accent transition-colors">80930-81930</a>
+                  <a href="tel:+919090034567" className="block text-white/80 hover:text-accent transition-colors">90900-34567</a>
                 </div>
               </div>
 
@@ -109,8 +109,8 @@ const Footer = () => {
                 </a>
               </div>
 
-              {/* Directions note and hours */}
-              <div className="text-xs text-white/60">Open daily 10:30 AM – 9:00 PM</div>
+              {/* Hours */}
+              <div className="text-xs text-white/60">Open daily 10:30 AM – 8:30 PM</div>
             </div>
           </motion.div>
         </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import logoBlack from '../../B21 logo Black.png';
+import logoBlack from '../../B21 logo White.png';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWhatsappConfig } from '@/lib/whatsapp';
 
@@ -17,12 +17,11 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.");
+  const { url: whatsappUrl } = useWhatsappConfig("Hello B21! I'd like to book an appointment.", 'header-book-now');
 
   const navItems = [
     { name: 'Services', href: '/services' },
     { name: 'Gallery', href: '/gallery' },
-    { name: 'Beauty Tips', href: '/tips' },
     { name: 'Blog', href: '/blog' },
     { name: 'About Us', href: '/about' },
   ] as const;
