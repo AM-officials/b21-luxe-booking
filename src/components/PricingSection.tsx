@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// Use optimized versions generated into public/images/optimized when available
-const menImg = '/images/optimized/men-pricing.jpg';
-const womenImg = '/images/optimized/women-pricing.jpg';
+// Use PNG versions for better quality
+const menImg = '/images/optimized/men-pricing.png';
+const womenImg = '/images/optimized/women-pricing.png';
 
 interface PriceItem { service: string; price: string; }
 
@@ -71,6 +71,10 @@ function PricingCard({ title, img, items, open, onToggle }: { title: string; img
           alt={title}
           loading="lazy"
           className="w-full h-56 object-cover object-center"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            console.error(`Failed to load image: ${target.src}`);
+          }}
         />
       </div>
 
@@ -81,6 +85,10 @@ function PricingCard({ title, img, items, open, onToggle }: { title: string; img
         loading="lazy"
         decoding="async"
         className="hidden sm:block absolute right-2 md:right-4 bottom-0 h-[300px] md:h-[360px] w-auto object-contain pointer-events-none select-none drop-shadow-xl translate-y-8 group-hover:translate-y-4 transition-transform duration-500"
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          console.error(`Failed to load image: ${target.src}`);
+        }}
       />
 
       <AnimatePresence initial={false}>

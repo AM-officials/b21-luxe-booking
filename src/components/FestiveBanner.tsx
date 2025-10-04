@@ -33,6 +33,12 @@ const FestiveBanner = () => {
           alt="Festive seasonal offer banner"
           className="w-full h-full object-cover object-center"
           loading="lazy"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            if (target.src !== '/images/pop-up-banner.jpg') {
+              target.src = '/images/pop-up-banner.jpg';
+            }
+          }}
         />
         {/* Overlay gradient for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/10" />
