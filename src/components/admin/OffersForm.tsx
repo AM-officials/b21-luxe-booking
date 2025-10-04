@@ -15,6 +15,7 @@ type FormValues = {
   whatsapp_number: string;
   whatsapp_message: string;
   banner_image: string;
+  action_button_text: string;
 };
 
 type OffersFormProps = {
@@ -36,6 +37,7 @@ export default function OffersForm({ onSuccess, onError }: OffersFormProps = {})
       whatsapp_number: '919876543210',
   whatsapp_message: "Hi B21! I'm interested in your 20% off last-minute booking offer.",
   banner_image: '/Pop-up banner offer.webp',
+      action_button_text: 'Book Now & Save 20%',
     },
   });
 
@@ -69,6 +71,7 @@ export default function OffersForm({ onSuccess, onError }: OffersFormProps = {})
         whatsapp_number: data.whatsapp_number,
   whatsapp_message: data.whatsapp_message,
   banner_image: (data as any).banner_image || '/Pop-up banner offer.webp',
+        action_button_text: (data as any).action_button_text || 'Book Now & Save 20%',
       });
     }
   }, [data, reset]);
@@ -210,6 +213,10 @@ export default function OffersForm({ onSuccess, onError }: OffersFormProps = {})
         <div className="md:col-span-2">
           <label className="block text-sm text-muted-foreground mb-1">WhatsApp Message</label>
           <input className="w-full border rounded px-3 py-2 bg-background" {...register('whatsapp_message')} />
+        </div>
+        <div className="md:col-span-2">
+          <label className="block text-sm text-muted-foreground mb-1">Action Button Text</label>
+          <input className="w-full border rounded px-3 py-2 bg-background" {...register('action_button_text')} placeholder="Book Now & Save 20%" />
         </div>
         <div className="md:col-span-2">
           <label className="block text-sm text-muted-foreground mb-1">Banner Image</label>

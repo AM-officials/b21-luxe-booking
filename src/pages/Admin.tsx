@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import PostsTable from '../../components/admin/PostsTable';
 import PostEditorForm from '../../components/admin/PostEditorForm';
 import OffersForm from '@/components/admin/OffersForm';
+import FestiveBannerForm from '@/components/admin/FestiveBannerForm';
 import Modal from '../../components/ui/Modal';
 import { useToast, ToastContainer } from '../../components/ui/Toast';
 import { useNavigate } from 'react-router-dom';
@@ -78,7 +79,10 @@ export default function AdminPage() {
 
         <div className="mt-12">
           <h2 className="font-heading text-2xl font-bold mb-4">Site Settings</h2>
-          <OffersForm onSuccess={(msg) => success(msg)} onError={(msg) => error(msg)} />
+          <div className="space-y-6">
+            <OffersForm onSuccess={(msg) => success(msg)} onError={(msg) => error(msg)} />
+            <FestiveBannerForm onSuccess={(msg) => success(msg)} onError={(msg) => error(msg)} />
+          </div>
         </div>
 
         <Modal isOpen={uiState === 'creating' || uiState === 'editing'} onClose={() => setUIState('idle')} title={uiState === 'creating' ? 'Create Post' : 'Edit Post'} size="xl">
