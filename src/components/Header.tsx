@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import logoBlack from '../../B21 logo Black.png';
+import logoWhite from '../../B21 logo White.png';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWhatsappConfig } from '@/lib/whatsapp';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,10 +40,36 @@ const Header = () => {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
+            {/* Logo - transitions from white to black on scroll (only on home page) */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
               <RouterLink to="/" className="flex items-center gap-2">
-                <img src={logoBlack} alt="B21" className="h-12 w-auto" />
+                {isHomePage ? (
+                  <div className="relative h-12" style={{ width: '120px' }}>
+                    {/* White logo - visible when not scrolled on home page */}
+                    <motion.img 
+                      src={logoWhite} 
+                      alt="B21" 
+                      className="h-12 w-auto absolute top-0 left-0"
+                      animate={{ opacity: isScrolled ? 0 : 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    {/* Black logo - visible when scrolled on home page */}
+                    <motion.img 
+                      src={logoBlack} 
+                      alt="B21" 
+                      className="h-12 w-auto absolute top-0 left-0"
+                      animate={{ opacity: isScrolled ? 1 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </div>
+                ) : (
+                  /* Black logo always visible on other pages */
+                  <img 
+                    src={logoBlack} 
+                    alt="B21" 
+                    className="h-12 w-auto"
+                  />
+                )}
               </RouterLink>
             </motion.div>
 

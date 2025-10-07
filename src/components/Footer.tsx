@@ -55,11 +55,10 @@ const Footer = () => {
           >
             <h4 className="font-semibold text-lg mb-6">Quick Links</h4>
             <ul className="space-y-3">
-              <li><RouterLink to="/#about" className="text-white/80 hover:text-accent transition-colors">About Us</RouterLink></li>
-              <li><RouterLink to="/#gallery" className="text-white/80 hover:text-accent transition-colors">Gallery</RouterLink></li>
+              <li><RouterLink to="/services" className="text-white/80 hover:text-accent transition-colors">Services</RouterLink></li>
+              <li><RouterLink to="/gallery" className="text-white/80 hover:text-accent transition-colors">Gallery</RouterLink></li>
               <li><RouterLink to="/blog" className="text-white/80 hover:text-accent transition-colors">Blog</RouterLink></li>
-              <li><a href="#" className="text-white/80 hover:text-accent transition-colors">Gift Cards</a></li>
-              <li><a href="#" className="text-white/80 hover:text-accent transition-colors">Privacy Policy</a></li>
+              <li><RouterLink to="/about" className="text-white/80 hover:text-accent transition-colors">About Us</RouterLink></li>
             </ul>
           </motion.div>
 

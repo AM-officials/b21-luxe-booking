@@ -7,17 +7,17 @@ const womenImg = '/images/optimized/women-pricing.png';
 interface PriceItem { service: string; price: string; }
 
 const menServices: PriceItem[] = [
-  { service: 'Haircut / Wash', price: 'Rs.300' },
+  { service: 'Haircut + Hairwash', price: 'Rs.300' },
   { service: 'Beard Trim', price: 'Rs.200' },
   { service: 'Hair Highlights', price: 'Rs.160' },
   { service: 'Hair Color', price: 'Rs.1000' },
   { service: 'Head Oil Massage', price: 'Rs.400' },
-  { service: 'Hair Treatment', price: 'Rs.950' },
-  { service: 'Straightening / Smoothening', price: 'Rs.2900' },
+  { service: 'Hair Spa', price: 'Rs.640' },
+  { service: 'Straightening / Smoothening', price: 'Rs.2500' },
   { service: 'Keratin', price: 'Rs.1900' },
   { service: 'Nano Plastia Hair Treatment', price: 'Rs.3999' },
   { service: 'Groom Makeup', price: 'Rs.2100' },
-  { service: 'Groom Package', price: 'Rs.5000' },
+  { service: 'Pre-Groom Package', price: 'Rs.5000' },
 ];
 const womenServices: PriceItem[] = [
   { service: 'Haircut', price: 'Rs.600' },
@@ -29,15 +29,15 @@ const womenServices: PriceItem[] = [
   { service: 'Head Oil Massage', price: 'Rs.750' },
   { service: 'Hair Spa', price: 'Rs.1100' },
   { service: 'Hair Treatment', price: 'Rs.2000' },
-  { service: 'Scalp Treatment', price: 'Rs.1600' },
+  { service: 'Scalp Treatment', price: 'Rs.1500' },
   { service: 'Straightening / Smoothening', price: 'Rs.3777' },
   { service: 'Keratin', price: 'Rs.3777' },
   { service: 'Hair Botox', price: 'Rs.3999' },
   { service: 'Nano Plastia Hair Treatment', price: 'Rs.3999' },
-  { service: 'Waxing', price: 'Rs.1250' },
-  { service: 'Makeup', price: 'Rs.150' },
-  { service: 'Bridal Makeup', price: 'Rs.9000' },
-  { service: 'Bridal Package', price: 'Rs.9000' },
+  { service: 'Waxing', price: 'Rs.150' },
+  { service: 'Light Makeup', price: 'Rs.2500' },
+  { service: 'Bridal Makeup', price: 'Rs.7000' },
+  { service: 'Pre-Bridal Package', price: 'Rs.9000' },
 ];
 
 // Skin Services (formerly Common/Unisex) displayed in both cards
@@ -94,7 +94,9 @@ function PricingCard({ title, img, items, open, onToggle }: { title: string; img
               {items.map(it => (
                 <div key={it.service} className="flex justify-between pr-4">
                   <span className="font-medium tracking-wide mr-4 flex-1 pr-3">{it.service}</span>
-                  <span className="tabular-nums font-semibold text-right">{it.price}</span>
+                  <span className="tabular-nums font-semibold text-right whitespace-nowrap">
+                    {it.price} <span className="text-[10px] font-normal text-muted-foreground">onwards</span>
+                  </span>
                 </div>
               ))}
             </div>
@@ -111,7 +113,9 @@ function PricingCard({ title, img, items, open, onToggle }: { title: string; img
               {skinServices.map(it => (
                 <div key={it.service} className="flex justify-between pr-4">
                   <span className="font-medium tracking-wide mr-4 flex-1 pr-3">{it.service}</span>
-                  <span className="tabular-nums font-semibold text-right">{it.price}</span>
+                  <span className="tabular-nums font-semibold text-right whitespace-nowrap">
+                    {it.price} <span className="text-[10px] font-normal text-muted-foreground">onwards</span>
+                  </span>
                 </div>
               ))}
             </div>

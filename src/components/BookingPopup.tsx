@@ -60,7 +60,7 @@ const BookingPopup = () => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-              className="relative bg-background rounded-2xl shadow-luxury w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl max-h-[90vh] overflow-auto mx-2 outline-none focus:outline-none"
+              className="relative bg-background rounded-2xl shadow-luxury w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg max-h-[85vh] overflow-auto mx-2 outline-none focus:outline-none"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Background removed to prevent dual banner conflicts */}
