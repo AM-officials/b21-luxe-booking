@@ -15,6 +15,7 @@ import BlogPost from "./pages/BlogPost";
 import AdminPage from "./pages/Admin.tsx";
 import LoginPage from "./pages/Login.tsx";
 import { AuthProvider } from "../context/AuthContext";
+import ScrollToTop from '@/components/ScrollToTop';
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <LoadingScreen />
           <Routes>
             <Route path="/" element={<Index />} />
